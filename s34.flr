@@ -1,0 +1,426 @@
+// section34.flr
+:- use_argumentation_theory.
+
+//34. Executive appointments
+
+Legal_Practitioner::Person.
+
+Accept::Action[|
+    thing=>Thing|].
+
+Executive_Appointment::Thing[|
+    associated_with=>\object|].
+
+Occupation::Thing.
+
+practicing_as_lawyer:Occupation.
+
+Person[|
+  primary_occupation{1..1}=>Occupation|].
+
+//34.—(1)  A legal practitioner must not accept any executive appointment associated with any of the following businesses:
+@{s34_1}
+@!{s34(1)[section->34,paragraph->1]}
+?actor[prohibition->?action] :-
+    ?actor:Legal_Practitioner,
+    ?action:Accept[thing->?appointment],
+    ?appointment:Executive_Appointment[associated_with->?business],
+    ?business:Business_For_Purposes_of_s34[described_in_section1(?actor)].
+
+//(a)	any business which detracts from, is incompatible with, or derogates from the dignity of, the legal profession;
+@{s34_1_a}
+@!{s34(1)(a)[section->34,paragraph->1,subparagraph->a]}
+?business[described_in_section1(?_),described_in_section1a(?_)] :-
+    ?business:Business_For_Purposes_of_s34,
+    (
+        ?business[detracts_from_legal_profession];
+        ?business[incompatible_with_legal_profession];
+        ?business[derogates_from_dignity_of_legal_profession]
+    ).
+
+// Interpretation Notes
+// These sections would apply as regard any legal practitioner, so the conclusion does not specify
+// the person.
+
+//(b)	any business which materially interferes with —
+//(i)	the legal practitioner’s primary occupation of practising as a lawyer;
+//(ii)	the legal practitioner’s availability to those who may seek the legal practitioner’s services as a lawyer; or
+//(iii)	the representation of the legal practitioner’s clients;
+@{s34_1_b}
+@!{s34(1)(b)[section->34,paragraph->1,subparagraph->b]}
+?business[described_in_section1(?actor),described_in_section1b(?actor)] :-
+    ?actor:Legal_Practitioner,
+    ?appointment:Executive_Appointment[associated_with->?business],
+    (
+        ?appointment[materially_interferes_with(primary_occupation)->?actor[primary_occupation->practicing_as_lawyer]];
+        ?appointment[materially_interferes_with(availability_as_lawyer)->?actor];
+        ?appointment[materially_interferes_with(representation_of_clients)->?actor]
+    ).
+
+// Interpretation Notes
+// A business, as a corporation, cannot materially interfere with these things.
+// Similarly, a line of work cannot materially interfere with these things.
+// Also, the text says "the" legal practitioner, not "a" legal practitioner.
+// As such, I am interpreting the section to mean that the specific person's hypothetical executive appointment
+// must not, by virtue of their taking up the responsibilities of that position, intefere with these things.
+// With regard to 1(b)(i), I interpret it as an additional requirement that the Legal Practitioner has,
+// as their primary occupation, the practice of law, which may not be true for all legal practitioners.
+// And if a legal practitioner does not have as their primary occupation the practice of law, an
+// appointment cannot possibly interfere with that primary occupation.
+
+//(c)	any business which is likely to unfairly attract business in the practice of law;
+@{s34_1_c}
+@!{s34(1)(c)[section->34,paragraph->1,subparagraph->c]}
+?business[described_in_section1(?_),described_in_section1c(?_)] :-
+    ?business[likely_to_unfairly_attract_business_in_practice_of_law].
+
+//(d)	any business which involves the sharing of the legal practitioner’s fees with, or the payment of a commission to, any unauthorised person for legal work performed by the legal practitioner;
+@{s34_1_d}
+@!{s34(1)(d)[section->34,paragraph->1,subparagraph->d]}
+?business[described_in_section1(?actor),described_in_section1d(?actor)] :-
+    ?business[involves->?activity],
+    ?actor:Legal_Practitioner,
+    (
+        ?activity:Sharing[
+            thing->?_fees:Fees[belonging_to->?actor],
+            with->?_fee_recipient:Person[\naf authorized],
+            for->?work:Work[performed_by->?actor,legal]
+        ];
+        ?activity:Payment_of_Commission[
+            from->?actor,
+            to->?_commission_recipient:Person[\naf authorized],
+            for->?work:Work[performed_by->?actor,legal]]
+    ).
+
+Sharing::Action[|
+    thing=>Thing,
+    with=>Person,
+    for=>Action
+|].
+
+Payment_of_Commission[|
+    from=>Person,
+    to=>Person,
+    for=>Action
+|].
+
+Fees::Thing.
+
+Work::Action[|
+  performed_by=>Person
+|].
+
+//(e)	any business set out in the First Schedule;
+@{s34_1_e}
+@!{s34(1)(e)[section->34,paragraph->1,subparagraph->e]}
+?business[described_in_section1(?_),described_in_section1e(?_)] :-
+    ?business[set_out_in_first_schedule].
+
+//(f)	any business which is prohibited by —
+//(i)	the Act;
+//(ii)	these Rules or any other subsidiary legislation made under the Act;
+//(iii)	any practice directions, guidance notes and rulings issued under section 71(6) of the Act; or
+//(iv)	any practice directions, guidance notes and rulings (relating to professional practice, etiquette, conduct and discipline) issued by the Council or the Society.
+@{s34_1_f}
+@!{s34(1)(f)[section->34,paragraph->1,subparagraph->f]}
+?business[described_in_section1(?_actor),described_in_section1f(?_)] :-
+    ?business[prohibited_for_purposes_of_s34].
+
+// This is difficult to model intelligently without growing the scope of the model enormously,
+// so I am taking a shortcut. Saying that a "business" is prohibited is different from
+// our model of prohibition, which is that it is a relationship between a person and an action.
+// The "these rules" part is difficult to mmodel without doing meta-programming.
+
+//(2)  Subject to paragraph (1), a legal practitioner in a Singapore law practice (called in this paragraph the main practice) may accept an executive appointment in another Singapore law practice (called in this paragraph the related practice), if the related practice is connected to the main practice in either of the following ways:
+//(a)	every legal or beneficial owner of the related practice is the sole proprietor, or a partner or director, of the main practice;
+//(b)	the legal practitioner accepts the executive appointment as a representative of the main practice in the related practice, and the involvement of the main practice in the related practice is not prohibited by any of the following:
+//(i)	the Act;
+//(ii)	these Rules or any other subsidiary legislation made under the Act;
+//(iii)	any practice directions, guidance notes and rulings issued under section 71(6) of the Act;
+//(iv)	any practice directions, guidance notes and rulings (relating to professional practice, etiquette, conduct and discipline) issued by the Council or the Society.
+
+Legal_Practice::Thing[|
+    legal_owner->Person,
+    beneficial_owner->Person,
+    sole_proprietor->Person,
+    partner->Person,
+    director->Person,
+    jurisdiction->\object
+  |].
+
+@{s34_2}
+@!{s34(2)[section->34,paragraph->2]}
+?actor[permission->?action] :-
+    ?actor:Legal_Practitioner,
+    ?main_practice:Legal_Practice[jurisdiction->Singapore, member->?actor],
+    ?action:Accept[thing->?appointment],
+    ?appointment:Executive_Appointment[associated_with->?related_practice],
+    ?related_practice:Legal_Practice[jurisdiction->Singapore],
+    //either
+    (
+        forall(?owner)^(?related_practice[legal_owner->?owner]~~>(
+            ?main_practice[partner->?x];
+            ?main_practice[sole_proprietor->?x];
+            ?main_practice[director->?x]
+        )),
+        forall(?owner)^(?related_practice[beneficial_owner->?owner]~~>(
+            ?main_practice[partner->?x];
+            ?main_practice[sole_proprietor->?x];
+            ?main_practice[director->?x]
+        ))
+    ) ; // or
+    (
+        ?action[representing->?main_practice],
+        \naf ?related_practice[involvement_prohibited_for_purposes_of_s34(?main_practice)]
+    ).
+
+// For defeasibility to work we need to be explicit that permissions and prohibitions conflict
+\opposes(?_actor[prohibition->?_action],?_actor[permission->?_action]).
+\overrides({s34_1,s34_1_a,s34_1_b,s34_1_c,s34_1_d,s34_1_e,s34_1_f},s34_2).
+
+// Interpretation notes
+// It is not clear what "involvement" is intended to mean, or how involvement could be
+// modeled as prohibited.  Again, involvement would be prohibited as regards "the main practice"
+// so we model involvement prohibition as something that is modified by the entity.
+// Subject to paragraph 1 means that if this rule concludes that someone is
+
+// Defeasibility requires conflicts to be made explicit, which is the reason for the opposes statement.
+// The override statement uses sub-properties of the tags for the statements inside paragraph 1,
+// because if paragraph 1 was later amended to make conclusios about prohibitions in sub-paragraphs,
+// this rule would still be subject to those conclusions, not only the conclusions in the root
+// paragraph. This is an example of how scope can be used with defeasibility.
+
+//(3)  Subject to paragraph (1), a legal practitioner may accept an executive appointment in a business entity which provides law-related services.
+@{s34_3}
+@!{s34(3)[section->34,paragraph->3]}
+?actor[permission->?action] :-
+    ?actor:Legal_Practitioner,
+    ?action:Accept[thing->?appointment],
+    ?appointment:Executive_Appointment[
+        in->?_business_entity:Business_Entity_For_Purposes_of_S34[
+            provides->?_service:Law_Related_Service_For_Purposes_of_S34
+        ]
+    ].
+\overrides({s34_1,s34_1_a,s34_1_b,s34_1_c,s34_1_d,s34_1_e,s34_1_f},34(3)).
+
+
+//(4)  Subject to paragraph (1), a legal practitioner (not being a locum solicitor) may accept an executive appointment in a business entity which does not provide any legal services or law-related services, if all of the conditions set out in the Second Schedule are satisfied.
+@{s34_4}
+@!{s34(4)[section->34,paragraph->4]}
+?actor[permission->?action] :-
+    ?actor:Legal_Practitioner,
+    \naf ?actor:Locum_Solicitor,
+    ?action:Accept[thing->?appointment],
+    ?appointment:Executive_Appointment[
+        in->?_business_entity:Business_Entity_For_Purposes_of_S34[
+            \naf provides->?_service:Law_Related_Service_For_Purposes_of_S34
+        ]
+    ],
+    conditions_of_the_second_schedule_are_met.
+
+\overrides({s34_1,s34_1_a,s34_1_b,s34_1_c,s34_1_d,s34_1_e,s34_1_f},34(4)).
+
+// Interpretation Notes
+// This is an incorporation by reference to the second schedule. It's very difficult to know how to model it without
+// reading the second schedule, because you don't know what entity those conditions might apply to.
+// I have faked it until I know better.
+
+//(5)  Despite paragraph (1)(b), but subject to paragraph (1)(a) and (c) to (f), a locum solicitor may accept an executive appointment in a business entity which does not provide any legal services or law-related services, if all of the conditions set out in the Second Schedule are satisfied.
+@{s34_5}
+@!{s34(5)[section->34,paragraph->5]}
+?actor[permission->?action] :-
+    ?actor:Legal_Practitioner,
+    ?actor:Locum_Solicitor,
+    ?action:Accept[thing->?appointment],
+    ?appointment:Executive_Appointment[
+        in->?_business_entity:Business_Entity_For_Purposes_of_S34[
+            \naf provides->?_service:Law_Related_Service_For_Purposes_of_S34
+        ]
+    ],
+    conditions_of_the_second_schedule_are_met.
+
+// Interpretation Notes
+// The same issues with (4) apply here.
+// Also, the override statements are difficult.
+// Despite paragraph 1(b) means "if you come to a conclusion by virtue of paragraph 1(b) which
+// contradicts this conclusion, this conclusion wins." By virtue of paragraph 1(b) here doesn't
+// mean that paragraph 1(b) is the rule that led to the conclusion. So if 1(b) is the reason, s1
+// says no, you can ignore s1.
+// If s1 says no for any other reason, s1 wins.
+// The simple way to model this is to negate the conclusion of paragraph 1b, here, but
+// then we are saying something in the code that is not said in the rule.
+// Note that if you can disqualify a business under both 1(b) and 1(c), section 1 overrides.
+// So the question is whether it is described in 1(b) and not elsewhere in paragraph 1.
+// Whether the individual sub-sections are complied with is not modeled anywhere, so we need
+// to add those conclusions to those sections. This is an example of "found x by virtue of y"
+// style meta-programming in law.
+
+\overrides(
+    {s34_1,s34_1_a,s34_1_b,s34_1_c,s34_1_d,s34_1_e,s34_1_f},
+    ?_actor[prohibition->?_action],
+    s34_5,
+    ?_actor[permission->?_action]) :-
+        ?_action[thing->?_appointment[in->?_business]],
+        ?_business[described_in_section1b(?_actor)],
+        \naf ?_business[described_in_section1a(?_actor)],
+        \naf ?_business[described_in_section1c(?_actor)],
+        \naf ?_business[described_in_section1d(?_actor)],
+        \naf ?_business[described_in_section1e(?_actor)],
+        \naf ?_business[described_in_section1f(?_actor)].
+
+
+//(6)  Except as provided in paragraphs (2) to (5) —
+//(a)	a legal practitioner in a Singapore law practice must not accept any executive appointment in another Singapore law practice; and
+//(b)	a legal practitioner must not accept any executive appointment in a business entity.
+
+@{s34_6}
+@!{s34(6)[section->34,paragraph->6]}
+\overrides({s34_2,s34_3,s34_3,s34_4,s34_5},s34_6).
+
+@{s34_6_a}
+@!{s34(6)(a)[section->34,paragraph->6,subparagraph->a]}
+?actor[prohibition->?action] :-
+    ?actor:Legal_Practitioner,
+    ?action:Accept[thing->?appointment],
+    ?appointment:Executive_Appointment[in->?_other_legal_practice],
+    ?_legal_practice:Legal_Practice[member->?actor,jurisdiction->Singapore],
+    ?_other_legal_practice:Legal_Practice[jurisdiction->Singapore],
+    ?_legal_pratice != ?_other_legal_practice.
+
+@{s34_6_b}
+@!{s34(6)(b)[section->34,paragraph->6,subparagraph->b]}
+?actor[prohibition->?action] :-
+    ?actor:Legal_Practitioner,
+    ?action:Accept[thing->?appointment],
+    ?appointment:Executive_Appointment[in->?_business:Business_Entity_For_Purposes_of_S34].
+
+// Interepretation Notes
+// Note that we can tag the override statement as coming from paragraph 6's root.
+// Note that the law is inconsistent between the word "law practice" and the word "legal practice"
+// I am re-using "legal practice" on the assumption they are identical.
+
+//(7)  To avoid doubt, nothing in this rule prohibits a legal practitioner from accepting any appointment in any institution set out in the Third Schedule.
+@@{strict}
+@{FTAOD}
+@{s34_7}
+@!{s34(7)[section->34,paragraph->7]}
+\neg ?actor[prohibition->?action] :-
+    ?actor:Legal_Practitioner,
+    ?action:Accept,
+    ?appointment:Executive_Appointment[in->?institution],
+    ?institution[set_out_in_third_schedule],
+    ?action[thing->?appointment].
+
+// Interpretation Notes
+// There are two ways to model this clause, and they are at cross-purposes.
+// If you want, you can model it as a part of the ruleset, and create a strict rule that
+// the conclusion does not hold. The upside is that if the rules inadvertently do conflict
+// with one another, the correct rule will prevail.
+// However, it is more properly an assertion about the ruleset, that the conclusion cannot
+// be reached using the ruleset. It would be possible to use model checkers to determine
+// whether or not that is true, but in order for the model checker to be able to do that it
+// would need to consider the ruleset in the absence of the rule itself.
+// So we model it hear as a strict rule, and tag it as FTAOD (for the avoidance of doubt),
+// so that it can be removed from the dataset for testing purposes, and used as a source of
+// a testing assertion.
+// "In this rule" is not modeled, except to the extent that if the file is limited to s34,
+// and the file is loaded, paragraph 7 will also be loaded. However, it could be loaded into
+// scope with other rules that do have the prohibited effect, in which case it would be
+// misplaced.
+
+//(8)  To avoid doubt, this rule does not authorise the formation of, or regulate —
+//(a)	any related practice referred to in paragraph (2); or
+//(b)	any business entity referred to in paragraph (3), (4) or (5).
+
+// Interpretation Notes
+// This could also be modeled as a strict rule, but the conclusion would be that no one
+// is authorized to do these things by virtue of the enacting of the rule that was not
+// authorized to do so before the rule was enacted. That requires a context outside of
+// the rule itself, as well as a means of modelling the effects of the adoption of
+// legislation, which isi complicated. 
+
+//(9)  In this rule and the First to Fourth Schedules —
+
+// Interpretation Notes
+// "In this rule, etc." is a scoping statement. No attempt is made to model it, here, and
+// instead the semantic meaning of that scoping is added to the name of the categories below.
+
+//“business” includes any business, trade or calling in Singapore or elsewhere, whether or not for the purpose of profit, but excludes the practice of law;
+Business_For_Purposes_of_s34::Thing.
+@{business_definition}
+@!{business_for_purpose_of_s34[section->9,definition->business]}
+?x:Business_For_Purposes_of_s34 :-
+    (
+          ?x:Business;
+          ?x:Trade;
+          ?x:Calling
+    ),
+    (
+        ?x[for_the_purpose_of_profit],
+        \neg ?x[for_the_purpose_of_profit]
+    ),
+    ?x !== practice_of_law.
+
+// Interpretation Notes
+// Using business to define business is circular.
+// Whether or not for the purposes of profit can be encoded, but doesn't mean much.
+// Similarly, legally speaking "business, trade or calling" are not an exclusive list, and would
+// admit of similar but not identical concepts. The encoding here is defeasible, to reflect
+// the possibility that other things might qualify as a business for the purposes of section 34.
+// But no attempt is made to delineate the circumstances in which that would be true.
+
+//“business entity”  —
+//(a)	includes any company, corporation, partnership, limited liability partnership, sole proprietorship, business trust or other entity that carries on any business; but
+//(b)	excludes any Singapore law practice, any Joint Law Venture, any Formal Law Alliance, any foreign law practice and any institution set out in the Third Schedule;
+@{business_entity_definition_a}
+@!{business_entity_for_purpose_of_s34(a)[section->9,definition->business_entity,subdefinition->a]}
+?x:Business_Entity_For_Purposes_of_S34 :-
+    ?x:Company;
+    ?x:Corporation;
+    ?x:Partnership;
+    ?x:Limited_Liability_Partnership;
+    ?x:Sole_Proprietorship;
+    ?x:Business_Trust;
+    ?x[carries_on->?_business:Business_For_Purposes_of_s34].
+
+@{business_entity_definition_b}
+@!{business_entity_for_purpose_of_s34(b)[section->9,definition->business_entity,subdefinition->b]}
+\neg ?x:Business_Entity_For_Purposes_of_S34 :-
+    ?x:Legal_Practice[jurisdiction->Singapore];
+    ?x:Joint_Law_Venture;
+    ?x:Formal_Law_Alliance;
+    ?x:Foreign_Law_Practice;
+    ?x[set_out_in_third_schedule].
+\overrides(business_entity_definition_b,business_entity_definition_a).
+
+// The override statement encodes the word "but" at the end of subdefinition (a).
+
+//“executive appointment” means a position associated with a business, or in a business entity or Singapore law practice, which entitles the holder of the position to perform executive functions in relation to the business, business entity or Singapore law practice (as the case may be), but excludes any non‑executive director or independent director associated with the business or in the business entity;
+@{executive_appointment_defintion}
+@!{executive_appointment_for_purpose_of_s34[section->9,definition->executive_appointment]}
+?X:Executive_Appointment :-
+    ?X:Position[entitles_holder_to_perform_executive_functions],
+    ( // either
+        ?X[associated_with->?_business]
+    ) ; //or
+    ( // either
+        ?X[in->?entity:Business_Entity_For_Purposes_of_S34];
+        // or
+        ?X[in->?entity:Legal_Practice[jurisdiction->Singapore]]
+    ),
+    \naf ?X:Independent_Director,
+    \naf ?X:Non_Executive_Director.
+
+//“law-related service” means any service set out in the Fourth Schedule, being a service that may reasonably be performed in conjunction with, and that is in substance related to, the provision of any legal service.
+@{law_related_service_definition}
+@!{law_related_service_for_purpose_of_s34[section->9,definition->law_related_service]}
+?X:Law_Related_Service_For_Purposes_of_S34 :-
+    ?X[set_out_in_fourth_schedule].
+
+// Interpretation Notes
+// The word "being" here is problematic, suggesting that the rest of the statement is a shorthand for what might
+// be included in the the fourth schedule, and so the rule is encoded solely with regard to whether it is included in
+// the fourth schedule, which is treated as a boolean.
+
+// This will load the test file, run the tests, and display the results.
+?- [+tests].

@@ -1,0 +1,44 @@
+#include "flrheader.flh"
+#include "flr_fld_standardtypes.flh"
+
+#define FLORA_COMPILATION_ID 43
+
+FLORA_THIS_WORKSPACE(imvd)(__fldnewvar1,jurisdiction,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvd)(__fldnewvar1,director,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvd)(__fldnewvar1,partner,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvd)(__fldnewvar1,sole_proprietor,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvd)(__fldnewvar1,beneficial_owner,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvd)(__fldnewvar1,legal_owner,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvdsig)(__fldnewvar1,performed_by,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvdsig)(__fldnewvar1,to,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvdsig)(__fldnewvar1,from,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvdsig)(__fldnewvar1,for,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvdsig)(__fldnewvar1,with,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvdsig)(__fldnewvar1,primary_occupation,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvdsig)(__fldnewvar1,associated_with,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(imvdsig)(__fldnewvar1,thing,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Fees',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Business_For_Purposes_of_s34',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Business_Entity_For_Purposes_of_S34',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Legal_Practitioner',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Accept',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Work',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Action',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Thing',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Occupation',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Legal_Practice',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Law_Related_Service_For_Purposes_of_S34',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Executive_Appointment',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Sharing',__fldnewvar2).
+FLORA_THIS_WORKSPACE(sub)(__fldnewvar1,'Person',__fldnewvar2).
+FLORA_THIS_WORKSPACE(meth)(__fldnewvar1,flapply(described_in_section1f,__newdontcarevar8),__fldnewvar2).
+FLORA_THIS_WORKSPACE(meth)(__fldnewvar1,flapply(described_in_section1e,__newdontcarevar9),__fldnewvar2).
+FLORA_THIS_WORKSPACE(meth)(__fldnewvar1,flapply(described_in_section1d,__actor),__fldnewvar2).
+FLORA_THIS_WORKSPACE(meth)(__fldnewvar1,flapply(described_in_section1c,__newdontcarevar9),__fldnewvar2).
+FLORA_THIS_WORKSPACE(meth)(__fldnewvar1,flapply(described_in_section1b,__actor),__fldnewvar2).
+FLORA_THIS_WORKSPACE(meth)(__fldnewvar1,flapply(described_in_section1a,__newdontcarevar9),__fldnewvar2).
+FLORA_THIS_WORKSPACE(meth)(__fldnewvar1,flapply(described_in_section1,___actor),__fldnewvar2).
+FLORA_THIS_WORKSPACE(meth)(__fldnewvar1,flapply(described_in_section1,__actor),__fldnewvar2).
+FLORA_THIS_WORKSPACE(meth)(__fldnewvar1,flapply(described_in_section1,__newdontcarevar7),__fldnewvar2).
+FLORA_THIS_WORKSPACE(mvd)(__fldnewvar1,permission,__fldnewvar2,__fldnewvar3).
+FLORA_THIS_WORKSPACE(mvd)(__fldnewvar1,prohibition,__fldnewvar2,__fldnewvar3).

@@ -1,0 +1,18 @@
+#include "flrheader.flh"
+#define FLORA_COMPILATION_ID 4
+
+
+FLORA_THIS_WORKSPACE(isa)('MegaCorp','Corporation',__newcontextvar4).
+FLORA_THIS_WORKSPACE(mvd)('CEO_of_MegaCorp',in,'MegaCorp',__newcontextvar8).
+FLORA_THIS_WORKSPACE(meth)('CEO_of_MegaCorp',entitles_holder_to_perform_executive_functions,__newcontextvar9).
+FLORA_THIS_WORKSPACE(isa)('CEO_of_MegaCorp','Position',__newcontextvar10).
+FLORA_THIS_WORKSPACE(isa)('Jason','Legal_Practitioner',__newcontextvar4).
+FLORA_THIS_WORKSPACE(mvd)('CEO_of_MegaCorp',flapply(materially_interferes_with,availability_as_lawyer),'Jason',__newcontextvar4).
+FLORA_THIS_WORKSPACE(mvd)('Accepting_CEO_Job',thing,'CEO_of_MegaCorp',__newcontextvar6).
+FLORA_THIS_WORKSPACE(isa)('Accepting_CEO_Job','Accept',__newcontextvar7).
+FLORA_THIS_WORKSPACE(mvd)('MC_is_Business_Entity',desc,'This is the first test.',__newcontextvar12).
+FLORA_THIS_WORKSPACE(isa)('MC_is_Business_Entity','TEST',__newcontextvar13).
+FLORA_THIS_WORKSPACE(mvd)('CEO_is_Executive_Appointment',desc,'It needs a desc',__newcontextvar12).
+FLORA_THIS_WORKSPACE(isa)('CEO_is_Executive_Appointment','TEST',__newcontextvar13).
+FLORA_THIS_WORKSPACE(mvd)('Jason_Cannot_Be_CEO',desc,'It needs a desc',__newcontextvar12).
+FLORA_THIS_WORKSPACE(isa)('Jason_Cannot_Be_CEO','TEST',__newcontextvar13).

@@ -1,0 +1,8 @@
+%% DESCRIPTION: If jason is a locum, and a business entity provides no legal or law related services
+%% DESCRIPTION: jason may not accept an executive appointment inside the entity even if the requirements of the
+%% DESCRIPTION: second schedule are met, and none of the requirements of section 1 are violated.
+
+locum_solicitor(jason).
+conditions_of_second_schedule_satisfied.
+
+?- not according_to(s34_4,may(jason,accept,ceo_megaCorp)).

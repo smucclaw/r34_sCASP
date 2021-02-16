@@ -1,0 +1,13 @@
+%% DESCRIPTION: If jason is not a locum, and a business entity provides no legal or law related services
+%% DESCRIPTION: jason must not accept an executive appointment inside the entity if the requirements of the
+%% DESCRIPTION: second schedule are met, and one of the requirements of subsection 1 is violated.
+
+
+carries_on(megaCorp,predatory_lending).
+incompatible_dignity_of_legal_profession(predatory_lending).
+business(predatory_lending).
+conditions_of_second_schedule_satisfied.
+
+?- according_to(s34_1,must_not(jason,accept,ceo_megaCorp)),
+   according_to(s34_4,may(jason,accept,ceo_megaCorp)),
+   holds(must_not(jason,accept,ceo_megaCorp)).

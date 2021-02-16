@@ -1,0 +1,29 @@
+// tests.flr
+// Tests for the section 34 encoding.
+
+?- [+'~/xf2/tests.flr'].
+
+MegaCorp:Corporation.
+CEO_of_MegaCorp:Position[in->MegaCorp,entitles_holder_to_perform_executive_functions].
+Jason:Legal_Practitioner.
+CEO_of_MegaCorp[materially_interferes_with(availability_as_lawyer)->Jason].
+Accepting_CEO_Job:Accept[thing->CEO_of_MegaCorp].
+
+MC_is_Business_Entity:TEST[
+    desc->'This is the first test.',
+    assert->${MegaCorp:Business_Entity_For_Purposes_of_S34}
+].
+
+CEO_is_Executive_Appointment:TEST[
+    desc->'It needs a desc',
+    assert->${CEO_of_MegaCorp:Executive_Appointment}
+].
+
+Jason_Cannot_Be_CEO:TEST[
+    desc->'It needs a desc',
+    assert->${Jason[prohibition->Accepting_CEO_Job]}
+].
+
+
+?- showteststats.
+?- showtests.

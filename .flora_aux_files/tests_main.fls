@@ -1,0 +1,27 @@
+flora_symbol('Business_Entity_For_Purposes_of_S34',0,\@,77,14,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol(prohibition,0,\@,119,24,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol(desc,0,\@,66,13,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('Executive_Appointment',0,\@,98,19,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('Accepting_CEO_Job',0,\@,52,10,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('~/xf2/tests.flr',0,\@,20,4,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('Position',0,\@,29,7,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('Jason_Cannot_Be_CEO',0,\@,103,22,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('CEO_of_MegaCorp',0,\@,27,7,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('MC_is_Business_Entity',0,\@,61,12,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('Legal_Practitioner',0,\@,40,8,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('CEO_is_Executive_Appointment',0,\@,82,17,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('TEST',0,\@,63,12,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('This is the first test.',0,\@,68,13,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('It needs a desc',0,\@,89,18,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol(thing,0,\@,56,10,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('MegaCorp',0,\@,23,6,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol(in,0,\@,31,7,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('Corporation',0,\@,25,6,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('Accept',0,\@,54,10,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol('Jason',0,\@,38,8,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol(showtests,0,\@,129,27,predicate_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol(availability_as_lawyer,0,\@,46,9,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol(showteststats,0,\@,133,28,predicate_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol(materially_interferes_with,1,\@,44,9,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol(assert,0,\@,71,14,function_symbol,nontransactional_symbol,'tests.flr').
+flora_symbol(entitles_holder_to_perform_executive_functions,0,\@,35,7,function_symbol,nontransactional_symbol,'tests.flr').

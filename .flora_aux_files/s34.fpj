@@ -1,0 +1,5 @@
+%% #include info for source file: /Users/jason/s34/s34.flr
+
+
+:-(multifile(/('_$_$_flora''include_prj_info',2))).
+'_$_$_flora''include_prj_info'('/Users/jason/s34/s34.flr',null).
