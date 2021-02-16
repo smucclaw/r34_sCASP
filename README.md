@@ -8,7 +8,7 @@ The source material is available [here](https://sso.agc.gov.sg/SL/LPA1966-S706-2
 
 In order to run this software you need to install the ciao programming langauge, and then install s(CASP).
 
-Instructions are available here.
+Instructions are available [here](https://gitlab.software.imdea.org/ciao-lang/sCASP).
 
 # Testing
 
