@@ -424,14 +424,17 @@ business_entity(X) :- carries_on(X,Y), business(Y), not -business_entity(X).
 #pred independent_director(X) :: '@(X) is an independent directorship'.
 #pred in(X,Y) :: '@(X) is in @(Y)'.
 
-executive_appointment(X) :- position(X), entitles_holder(X), associated_with(X,Y), business(Y), not -executive_appointment(X).
-executive_appointment(X) :- position(X), entitles_holder(X), in(X,Y), business_entity(Y), not -executive_appointment(X).
-executive_appointment(X) :- position(X), entitles_holder(X), in(X,Y), law_practice(Y), jurisdiction(Y,singapore), not -executive_appointment(X).
 
--executive_appointment(X) :- non_executive_director(X), in(X,Y), business_entity(Y).
--executive_appointment(X) :- independent_director(X), in(X,Y), business_entity(Y).
--executive_appointment(X) :- non_executive_director(X), associated_with(X,Y), business(Y).
--executive_appointment(X) :- independent_director(X), associated_with(X,Y), business(Y).
+executive_appointment(X) :- position(X), entitles_holder(X), associated_with(X,Y), business(Y), not non_executive_or_independent_director_in(X,Y).
+executive_appointment(X) :- position(X), entitles_holder(X), in(X,Y), business_entity(Y), not non_executive_or_independent_director_in(X,Y).
+executive_appointment(X) :- position(X), entitles_holder(X), in(X,Y), law_practice(Y), jurisdiction(Y,singapore), not non_executive_or_independent_director_in(X,Y).
+
+#pred non_executive_or_independent_director_in(X,Y) :: '@(X) is a non-executive or independent director in @(Y)'.
+
+non_executive_or_independent_director_in(X,Y) :- non_executive_director(X), in(X,Y), business_entity(Y).
+non_executive_or_independent_director_in(X,Y) :- independent_director(X), in(X,Y), business_entity(Y).
+non_executive_or_independent_director_in(X,Y) :- non_executive_director(X), associated_with(X,Y), business(Y).
+non_executive_or_independent_director_in(X,Y) :- independent_director(X), associated_with(X,Y), business(Y).
 
 % “law-related service” means any service set out in the Fourth Schedule, being a service 
 % that may reasonably be performed in conjunction with, and that is in substance related 
