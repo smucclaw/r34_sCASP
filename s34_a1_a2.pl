@@ -122,14 +122,12 @@ according_to(s34_1_b,must_not(Actor, accept, Appointment)) :-
 according_to(s34_1_b,must_not(Actor, accept, Appointment)) :-
     legal_practitioner(Actor),
     executive_appointment(Appointment),
-    materially_interferes_with(Appointment,availability,Lawyer),
-    materially_interferes_with(Business, availability, Lawyer).
+    materially_interferes_with(Appointment,availability,Lawyer).
 
 according_to(s34_1_b,must_not(Actor, accept, Appointment)) :-
     legal_practitioner(Actor),
     executive_appointment(Appointment),
-    materially_interferes_with(Appointment,representation,Lawyer),
-    materially_interferes_with(Business,representation,Lawyer).
+    materially_interferes_with(Appointment,representation,Lawyer).
 
 % (2)  Subject to paragraph (1), a legal practitioner in a Singapore law practice 
 % (called in this paragraph the main practice) may accept an executive appointment 
