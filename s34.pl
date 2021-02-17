@@ -384,13 +384,15 @@ business(X) :- calling(X),  -in(X,singapore), -for_profit(X), X \= practice_of_l
 #pred carries_on(X,Y) :: '@(X) carries on @(Y)'.
 #pred business(X) :: '@(X) is a business for the purposes of section 34'.
 
-business_entity(X) :- carries_on(X,Y), business(Y), company(X), not -business_entity(X).
-business_entity(X) :- carries_on(X,Y), business(Y), corporation(X), not -business_entity(X).
-business_entity(X) :- carries_on(X,Y), business(Y), partnership(X), not -business_entity(X).
-business_entity(X) :- carries_on(X,Y), business(Y), llp(X), not -business_entity(X).
-business_entity(X) :- carries_on(X,Y), business(Y), soleprop(X), not -business_entity(X).
-business_entity(X) :- carries_on(X,Y), business(Y), business_trust(X), not -business_entity(X).
-business_entity(X) :- carries_on(X,Y), business(Y), not -business_entity(X).
+business_entity(X) :- carries_on(X,Y), business(Y), company(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), corporation(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), partnership(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), llp(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), soleprop(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), business_trust(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+#pred law_practice_in_singapore(X) :: '@(X) is a singapore law practice'.
+#pred third_schedule_institution(X) :: '@(X) is an institution listed in the third schedule'.
 
 % Syntactic ambiguity of whether carries on applies to all of the list.
 
@@ -404,12 +406,6 @@ business_entity(X) :- carries_on(X,Y), business(Y), not -business_entity(X).
 #pred foreign_law_practice(X) :: '@(X) is a foreign law practice'.
 #pred institution(X) :: '@(X) is an institution'.
 #pred in_third_schedule(X) :: '@(X) is listed in the third schedule'.
-
--business_entity(X) :- law_practice(X), jurisdiction(X,singapore).
--business_entity(X) :- joint_law_venture(X).
--business_entity(X) :- formal_law_alliance(X).
--business_entity(X) :- foreign_law_practice(X).
--business_entity(X) :- institution(X), in_third_schedule(X).
 
 % “executive appointment” means a position associated with a business, or in a business 
 % entity or Singapore law practice, which entitles the holder of the position to perform 
