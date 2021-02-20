@@ -2,6 +2,9 @@
 %% DESCRIPTION: part of section 34(1), and would otherwise be permitted
 %% DESCRIPTION: by section 34(5), the prohibition hold, and the permission does not.
 
+#include 'basic_facts.pl'.
+#include '../s34_amended.pl'.
+
 locum_solicitor(jason).
 materially_interferes_with(ceo_megaCorp,availability,jason).
 conditions_of_second_schedule_satisfied.

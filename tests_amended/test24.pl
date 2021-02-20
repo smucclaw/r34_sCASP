@@ -1,6 +1,9 @@
 %% DESCRIPTION: A locum solicitor cannot accept a position in a business entity that does
 %% DESCRIPTION: provide law-related services even if the conditions of the schedule are met.
 
+#include 'basic_facts.pl'.
+#include '../s34_amended.pl'.
+
 conditions_of_second_schedule_satisfied.
 locum_solicitor(jason).
 provides(megaCorp,litigation).

@@ -1,6 +1,9 @@
 %% DESCRIPTION: Without more, jason cannot take an executive appointment in another singapore law practice
 %% DESCRIPTION: because of section 34(6)(a).
 
+#include 'basic_facts.pl'.
+#include '../s34.pl'.
+
 law_practice(other_practice).
 jurisdiction(other_practice,singapore).
 position(other_practice_job).

@@ -2,6 +2,9 @@
 %% DESCRIPTION: and his primary occupation is practicing the law, accepting the
 %% DESCRIPTION: CEO position should be prohibited.
 
+#include 'basic_facts.pl'.
+#include '../s34_amended.pl'.
+
 materially_interferes_with(ceo_megaCorp,practicing_as_a_lawyer,jason).
 
 % This does not work, but can be made to work by the nonsensical fact:

@@ -2,6 +2,9 @@
 %% DESCRIPTION: if megacorp's business involves giving commissions to unauthorized
 %% DESCRIPTION: people for jason's legal work.
 
+#include 'basic_facts.pl'.
+#include '../s34_amended.pl'.
+
 unauthorized(meng).
 involves_paying_commission(widget_sales, meng_commission, meng).
 as_compensation_for(meng_commission,jason_work).

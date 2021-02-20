@@ -23,28 +23,20 @@ Once installed, you can run two different sets of tests against the original and
 |s34_amended.pl|26|26|
 
 Because the amendment changed some of the section numberings, it was necessary to rewrite some of the tests
-to reflect the new numberings. The amended version of the code should be run against the tests in the amended
-tests folder, as follows:
+to reflect the new numberings. There are therefore two packages of tests.
 
 ```
-./run_tests.sh -1 s34.pl tests
-./run_tests.sh -1 s34_amended.pl tests_amended
+./run_tests.sh tests
+./run_tests.sh tests_amended
 ```
-
-Using the `-1` flag causes each test to stop after one stable model is found. If you omit it,
-you will be told how many stable models were found for each test. Be aware that this can significantly
-increase the runtime.
-
-Using the `-i` flag will pause after each tests is executed, if you would like to see the results one
-at a time.
 
 ## Using s(CASP)
 
 To run a test directly, using the following command:
 
-`scasp --human --tree s34.pl tests/basic_facts.pl tests/test0.pl`
+`scasp --human --tree tests/test0.pl`
 
-replacing the filename for the encoding and the filename for the specific test as appropriate. If you run the query above, the output
+replacing the filename for the specific test as appropriate. If you run the query above, the output
 will begin as follows:
 
 ```

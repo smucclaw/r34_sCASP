@@ -2,6 +2,9 @@
 %% DESCRIPTION: and human trafficking is incompatible with the dignity of the human profession,
 %% DESCRIPTION: jason cannot accept that position.
 
+#include 'basic_facts.pl'.
+#include '../s34.pl'.
+
 incompatible_dignity_of_legal_profession(smuggling).
 business(smuggling).
 position(smuggling_boss).

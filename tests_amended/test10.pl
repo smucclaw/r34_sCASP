@@ -2,6 +2,9 @@
 %% DESCRIPTION: is the sole proprietor of his firm, he is not permitted by subparagraph 2(a) to take an
 %% DESCRIPTION: executive position in that other legal practice.
 
+#include 'basic_facts.pl'.
+#include '../s34_amended.pl'.
+
 law_practice(other_practice).
 partnership(other_practice).
 carries_on(other_practice,practice_of_law).

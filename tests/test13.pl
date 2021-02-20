@@ -5,6 +5,9 @@
 %% DESCRIPTION: executive position in that other legal practice, but prohibited by section 1, and section 1
 %% DESCRIPTION: wins.
 
+#include 'basic_facts.pl'.
+#include '../s34.pl'.
+
 law_practice(other_practice).
 partnership(other_practice).
 carries_on(other_practice,practice_of_law).

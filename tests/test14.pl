@@ -1,5 +1,8 @@
 %% DESCRIPTION: Jason may accept an executive appointment in a business entity that provides law-related services.
 
+#include 'basic_facts.pl'.
+#include '../s34.pl'.
+
 company(blah_corp).
 provides(blah_corp,corporate_registry_search).
 service(corporate_registry_search).

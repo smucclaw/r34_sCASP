@@ -2,6 +2,8 @@
 %% DESCRIPTION: jason must not accept an executive appointment inside the entity if the requirements of the
 %% DESCRIPTION: second schedule are met, and one of the requirements of subsection 1 is violated.
 
+#include 'basic_facts.pl'.
+#include '../s34_amended.pl'.
 
 carries_on(megaCorp,predatory_lending).
 incompatible_dignity_of_legal_profession(predatory_lending).

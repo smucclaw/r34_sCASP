@@ -1,5 +1,7 @@
 %% DESCRIPTION: If being the ceo of megaCorp interferes with his availability,
 %% DESCRIPTION: jason should be prohibited from accepting the position.
+#include 'basic_facts.pl'.
+#include '../s34.pl'.
 
 materially_interferes_with(ceo_megaCorp,availability,jason).
 

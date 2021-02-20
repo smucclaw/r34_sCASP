@@ -2,6 +2,9 @@
 %% DESCRIPTION: is to an institution listed in the third schedule, you are always
 %% DESCRIPTION: to accept that appointment.
 
+#include 'basic_facts.pl'.
+#include '../s34_amended.pl'.
+
 institution(smucclaw).
 position(researcher).
 entitles_holder(researcher).
