@@ -1,14 +1,13 @@
+#include 'lpdat.pl'.
+
 #pred according_to(X,may(Y,accept,Z)) :: 'in accordance with @(X), @(Y) is permitted to accept @(Z)'.
 #pred according_to(X,must_not(Y,accept,Z)) :: 'in accordance with @(X), @(Y) is prohibited from accepting @(Z)'.
 #pred according_to(X,Y) :: 'in accordance with @(X), @(Y)'.
 #pred holds(may(Y,accept,Z)) :: 'it holds that @(Y) is permitted to accept @(Z)'.
 #pred holds(must_not(Y,accept,Z)) :: 'it holds that @(Y) is prohibited from accepting @(Z)'.
-#pred holds(X) :: '@(X) holds'.
-#pred defeated(X,Y) :: 'the conclusion from @(X) of @(Y) is defeated'.
 
-holds(Holding) :-
-    according_to(Section,Holding),
-    not defeated(Section,Holding).
+%% This tells the defeasibility system that may and must not conlfict.
+opposes(_,may(A,B,C),_,must_not(A,B,C)).
 
 % 34. Executive appointments
 % 34.—(1)  A legal practitioner must not accept any executive appointment associated with 
@@ -123,9 +122,11 @@ according_to(s34_2_a,may(LP,accept,EA)) :-
     jurisdiction(Other_Practice,singapore),
     not owner_and_not_partner_of(Other_Practice,Main_Practice).
 
-defeated(s34_2_a,may(LP,accept,EA)) :-
-    according_to(s34_1,must_not(LP,accept,EA)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
+overrides(s34_1,must_not(LP,accept,EA),s34_2_a,may(LP,accept,EA)).
+
+%defeated(s34_2_a,may(LP,accept,EA)) :-
+%    according_to(s34_1,must_not(LP,accept,EA)),
+%    not defeated(s34_1,must_not(LP,accept,EA)).
 
 
 owner_of(X,Y) :-
@@ -168,9 +169,12 @@ according_to(s34_2_b,may(LP,accept,EA)) :-
     accepts_position_as_representative(LP,EA,Main_Practice),
     not holds(must_not(Main_Practice,participate,Other_Practice)). % this is a low-fidelity representation of the prohibition.
 
-defeated(s34_2_b,may(LP,accept,EA)) :-
-    according_to(s34_1,must_not(LP,accept,EA)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
+overrides(s34_1,must_not(LP,accept,EA),s34_2_b,may(LP,accept,EA)).
+
+
+%defeated(s34_2_b,may(LP,accept,EA)) :-
+%    according_to(s34_1,must_not(LP,accept,EA)),
+%    not defeated(s34_1,must_not(LP,accept,EA)).
     
 
 
@@ -186,9 +190,12 @@ according_to(s34_3,may(LP,accept,EA)) :-
     provides(BE,LRS),
     law_related_service(LRS).
 
-defeated(s34_3,may(LP,accept,EA)) :-
-    according_to(s34_1,must_not(LP,accept,EA)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
+overrides(s34_1,must_not(LP,accept,EA),s34_3,may(LP,accept,EA)).
+
+
+%defeated(s34_3,may(LP,accept,EA)) :-
+%    according_to(s34_1,must_not(LP,accept,EA)),
+%    not defeated(s34_1,must_not(LP,accept,EA)).
 
 
 % (4)  Subject to paragraph (1), a legal practitioner (not being a locum solicitor) may 
@@ -208,9 +215,12 @@ according_to(s34_4,may(LP,accept,EA)) :-
     not provides_legal_or_law_related_services(BE),
     conditions_of_second_schedule_satisfied.
 
-defeated(s34_4,may(LP,accept,EA)) :-
-    according_to(s34_1,must_not(LP,accept,EA)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
+overrides(s34_1,must_not(LP,accept,EA),s34_4,may(LP,accept,EA)).
+
+
+%defeated(s34_4,may(LP,accept,EA)) :-
+%    according_to(s34_1,must_not(LP,accept,EA)),
+%    not defeated(s34_1,must_not(LP,accept,EA)).
 
 
 % (5)  Despite paragraph (1)(b), but subject to paragraph (1)(a) and (c) to (f), 
@@ -229,41 +239,70 @@ according_to(s34_5,may(LP,accept,EA)) :-
     not provides_legal_or_law_related_services(BE),
     conditions_of_second_schedule_satisfied.
 
-defeated(s34_5,may(LP,accept,EA)) :-
+overrides(s34_1,must_not(LP,accept,EA),s34_5,may(LP,accept,EA)) :-
     associated_with(EA,B),
-    according_to(s34_1,must_not(LP,accept,EA)),
-    according_to(s34_1_a,described_in_s1(B)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
-defeated(s34_5,may(LP,accept,EA)) :-
+    according_to(s34_1_a,described_in_s1(B)).
+overrides(s34_1,must_not(LP,accept,EA),s34_5,may(LP,accept,EA)) :-
     associated_with(EA,B),
-    according_to(s34_1,must_not(LP,accept,EA)),
-    according_to(s34_1_c,described_in_s1(B)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
-defeated(s34_5,may(LP,accept,EA)) :-
+    according_to(s34_1_c,described_in_s1(B)).
+overrides(s34_1,must_not(LP,accept,EA),s34_5,may(LP,accept,EA)) :-
     associated_with(EA,B),
-    according_to(s34_1,must_not(LP,accept,EA)),
-    according_to(s34_1_d,described_in_s1(B)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
-defeated(s34_5,may(LP,accept,EA)) :-
+    according_to(s34_1_d,described_in_s1(B)).
+overrides(s34_1,must_not(LP,accept,EA),s34_5,may(LP,accept,EA)) :-
     associated_with(EA,B),
-    according_to(s34_1,must_not(LP,accept,EA)),
-    according_to(s34_1_e,described_in_s1(B)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
-defeated(s34_5,may(LP,accept,EA)) :-
+    according_to(s34_1_e,described_in_s1(B)).
+overrides(s34_1,must_not(LP,accept,EA),s34_5,may(LP,accept,EA)) :-
     associated_with(EA,B),
-    according_to(s34_1,must_not(LP,accept,EA)),
-    according_to(s34_1_f,described_in_s1(B)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
-defeated(s34_1,must_not(LP,accept,EA)) :-
+    according_to(s34_1_f,described_in_s1(B)).
+
+
+%defeated(s34_5,may(LP,accept,EA)) :-
+%    associated_with(EA,B),
+%    according_to(s34_1,must_not(LP,accept,EA)),
+%    according_to(s34_1_a,described_in_s1(B)),
+%    not defeated(s34_1,must_not(LP,accept,EA)).
+%defeated(s34_5,may(LP,accept,EA)) :-
+%    associated_with(EA,B),
+%    according_to(s34_1,must_not(LP,accept,EA)),
+%    according_to(s34_1_c,described_in_s1(B)),
+%    not defeated(s34_1,must_not(LP,accept,EA)).
+%defeated(s34_5,may(LP,accept,EA)) :-
+%    associated_with(EA,B),
+%    according_to(s34_1,must_not(LP,accept,EA)),
+%    according_to(s34_1_d,described_in_s1(B)),
+%    not defeated(s34_1,must_not(LP,accept,EA)).
+%defeated(s34_5,may(LP,accept,EA)) :-
+%    associated_with(EA,B),
+%    according_to(s34_1,must_not(LP,accept,EA)),
+%    according_to(s34_1_e,described_in_s1(B)),
+%    not defeated(s34_1,must_not(LP,accept,EA)).
+%defeated(s34_5,may(LP,accept,EA)) :-
+%    associated_with(EA,B),
+%    according_to(s34_1,must_not(LP,accept,EA)),
+%    according_to(s34_1_f,described_in_s1(B)),
+%    not defeated(s34_1,must_not(LP,accept,EA)).
+
+
+overrides(s34_5,may(LP,accept,EA),s34_1,must_not(LP,accept,EA)) :-
     associated_with(EA,B),
-    according_to(s34_5,may(LP,accept,EA)),
     according_to(s34_1_b,described_in_s1(B)),
     not according_to(s34_1_a,described_in_s1(B)),
     not according_to(s34_1_c,described_in_s1(B)),
     not according_to(s34_1_d,described_in_s1(B)),
     not according_to(s34_1_e,described_in_s1(B)),
-    not according_to(s34_1_f,described_in_s1(B)),
-    not defeated(s34_5,may(LP,accept,EA)).
+    not according_to(s34_1_f,described_in_s1(B)).
+
+
+%defeated(s34_1,must_not(LP,accept,EA)) :-
+%    associated_with(EA,B),
+%    according_to(s34_5,may(LP,accept,EA)),
+%    according_to(s34_1_b,described_in_s1(B)),
+%    not according_to(s34_1_a,described_in_s1(B)),
+%    not according_to(s34_1_c,described_in_s1(B)),
+%    not according_to(s34_1_d,described_in_s1(B)),
+%    not according_to(s34_1_e,described_in_s1(B)),
+%    not according_to(s34_1_f,described_in_s1(B)),
+%    not defeated(s34_5,may(LP,accept,EA)).
 
 #pred provides_legal_or_law_related_services(X) :: '@(X) provides legal or law-related services'.
 
@@ -285,21 +324,27 @@ according_to(s34_6_a,must_not(LP,accept,EA)) :-
     in(EA,Other_Practice),
     not in(LP,Other_Practice).
 
-defeated(s34_6_a,must_not(LP,accept,EA)) :-
-    according_to(s34_2_a,may(LP,accept,EA)),
-    not defeated(s34_2_a,may(LP,accept,EA)).
-defeated(s34_6_a,must_not(LP,accept,EA)) :-
-    according_to(s34_2_b,may(LP,accept,EA)),
-    not defeated(s34_2_b,may(LP,accept,EA)).
-defeated(s34_6_a,must_not(LP,accept,EA)) :-
-    according_to(s34_3,may(LP,accept,EA)),
-    not defeated(s34_3,may(LP,accept,EA)).
-defeated(s34_6_a,must_not(LP,accept,EA)) :-
-    according_to(s34_4,may(LP,accept,EA)),
-    not defeated(s34_4,may(LP,accept,EA)).
-defeated(s34_6_a,must_not(LP,accept,EA)) :-
-    according_to(s34_5,may(LP,accept,EA)),
-    not defeated(s34_5,may(LP,accept,EA)).
+overrides(s34_2_a,may(LP,accept,EA),s34_6_a,must_not(LP,accept,EA)).
+overrides(s34_2_b,may(LP,accept,EA),s34_6_a,must_not(LP,accept,EA)).
+overrides(s34_3,may(LP,accept,EA),s34_6_a,must_not(LP,accept,EA)).
+overrides(s34_4,may(LP,accept,EA),s34_6_a,must_not(LP,accept,EA)).
+overrides(s34_5,may(LP,accept,EA),s34_6_a,must_not(LP,accept,EA)).
+
+%defeated(s34_6_a,must_not(LP,accept,EA)) :-
+%    according_to(s34_2_a,may(LP,accept,EA)),
+%    not defeated(s34_2_a,may(LP,accept,EA)).
+%defeated(s34_6_a,must_not(LP,accept,EA)) :-
+%    according_to(s34_2_b,may(LP,accept,EA)),
+%    not defeated(s34_2_b,may(LP,accept,EA)).
+%defeated(s34_6_a,must_not(LP,accept,EA)) :-
+%    according_to(s34_3,may(LP,accept,EA)),
+%    not defeated(s34_3,may(LP,accept,EA)).
+%defeated(s34_6_a,must_not(LP,accept,EA)) :-
+%    according_to(s34_4,may(LP,accept,EA)),
+%    not defeated(s34_4,may(LP,accept,EA)).
+%defeated(s34_6_a,must_not(LP,accept,EA)) :-
+%    according_to(s34_5,may(LP,accept,EA)),
+%    not defeated(s34_5,may(LP,accept,EA)).
 
 % (b)	a legal practitioner must not accept any executive appointment in a business entity.
 according_to(s34_6_b,must_not(LP,accept,EA)) :-
@@ -308,21 +353,28 @@ according_to(s34_6_b,must_not(LP,accept,EA)) :-
     business_entity(BE),
     in(EA,BE).
 
-defeated(s34_6_b,must_not(LP,accept,EA)) :-
-    according_to(s34_2_a,may(LP,accept,EA)),
-    not defeated(s34_2_a,may(LP,accept,EA)).
-defeated(s34_6_b,must_not(LP,accept,EA)) :-
-    according_to(s34_2_b,may(LP,accept,EA)),
-    not defeated(s34_2_b,may(LP,accept,EA)).
-defeated(s34_6_b,must_not(LP,accept,EA)) :-
-    according_to(s34_3,may(LP,accept,EA)),
-    not defeated(s34_3,may(LP,accept,EA)).
-defeated(s34_6_b,must_not(LP,accept,EA)) :-
-    according_to(s34_4,may(LP,accept,EA)),
-    not defeated(s34_4,may(LP,accept,EA)).
-defeated(s34_6_b,must_not(LP,accept,EA)) :-
-    according_to(s34_5,may(LP,accept,EA)),
-    not defeated(s34_5,may(LP,accept,EA)).
+overrides(s34_2_a,may(LP,accept,EA),s34_6_b,must_not(LP,accept,EA)).
+overrides(s34_2_b,may(LP,accept,EA),s34_6_b,must_not(LP,accept,EA)).
+overrides(s34_3,may(LP,accept,EA),s34_6_b,must_not(LP,accept,EA)).
+overrides(s34_4,may(LP,accept,EA),s34_6_b,must_not(LP,accept,EA)).
+overrides(s34_5,may(LP,accept,EA),s34_6_b,must_not(LP,accept,EA)).
+
+
+%defeated(s34_6_b,must_not(LP,accept,EA)) :-
+%    according_to(s34_2_a,may(LP,accept,EA)),
+%    not defeated(s34_2_a,may(LP,accept,EA)).
+%defeated(s34_6_b,must_not(LP,accept,EA)) :-
+%    according_to(s34_2_b,may(LP,accept,EA)),
+%    not defeated(s34_2_b,may(LP,accept,EA)).
+%defeated(s34_6_b,must_not(LP,accept,EA)) :-
+%    according_to(s34_3,may(LP,accept,EA)),
+%    not defeated(s34_3,may(LP,accept,EA)).
+%defeated(s34_6_b,must_not(LP,accept,EA)) :-
+%    according_to(s34_4,may(LP,accept,EA)),
+%    not defeated(s34_4,may(LP,accept,EA)).
+%defeated(s34_6_b,must_not(LP,accept,EA)) :-
+%    according_to(s34_5,may(LP,accept,EA)),
+%    not defeated(s34_5,may(LP,accept,EA)).
 
 % (7)  To avoid doubt, nothing in this rule prohibits a legal practitioner 
 % from accepting any appointment in any institution set out in the Third Schedule.
