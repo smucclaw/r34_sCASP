@@ -1,14 +1,11 @@
 #pred according_to(X,may(Y,accept,Z)) :: 'in accordance with @(X), @(Y) is permitted to accept @(Z)'.
 #pred according_to(X,must_not(Y,accept,Z)) :: 'in accordance with @(X), @(Y) is prohibited from accepting @(Z)'.
 #pred according_to(X,Y) :: 'in accordance with @(X), @(Y)'.
-#pred holds(may(Y,accept,Z)) :: 'it holds that @(Y) is permitted to accept @(Z)'.
-#pred holds(must_not(Y,accept,Z)) :: 'it holds that @(Y) is prohibited from accepting @(Z)'.
-#pred holds(X) :: '@(X) holds'.
-#pred defeated(X,Y) :: 'the conclusion from @(X) of @(Y) is defeated'.
+#pred holds(Rule,may(Y,accept,Z)) :: 'according to @(Rule) it holds that @(Y) is permitted to accept @(Z)'.
+#pred holds(Rule,must_not(Y,accept,Z)) :: 'according to @(Rule) it holds that @(Y) is prohibited from accepting @(Z)'.
 
-holds(Holding) :-
-    according_to(Section,Holding),
-    not defeated(Section,Holding).
+%% This tells the defeasibility system that may and must not conlfict wherever they arise.
+opposes(_,may(A,B,C),_,must_not(A,B,C)).
 
 % 34. Executive appointments
 % 34.—(1)  A legal practitioner must not accept any executive appointment associated with 
@@ -24,7 +21,7 @@ according_to(s34_1,must_not(Actor, accept, Appointment)) :-
     executive_appointment(Appointment),
     associated_with(Appointment,Business),
     business(Business),
-    holds(described_in_s1(Business)).
+    according_to(_,described_in_s1(Business)).
 
 % Not clear if I should be using holds/1 here instead of naming the sub-paragraphs individually.
 
@@ -166,7 +163,7 @@ according_to(s34_2_b,may(LP,accept,EA)) :-
     law_practice(Other_Practice),
     jurisdiction(Other_Practice,singapore),
     accepts_position_as_representative(LP,EA,Main_Practice),
-    not holds(must_not(Main_Practice,participate,Other_Practice)). % this is a low-fidelity representation of the prohibition.
+    not holds(_,must_not(Main_Practice,participate,Other_Practice)). % this is a low-fidelity representation of the prohibition.
 
 defeated(s34_2_b,may(LP,accept,EA)) :-
     according_to(s34_1,must_not(LP,accept,EA)),
