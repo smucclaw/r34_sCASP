@@ -20,6 +20,6 @@ entitles_holder(other_practice_executive).
 
 accepts_position_as_representative(jason,other_practice_executive,abc_llp).
 
-holds(must_not(abc_llp,participate,other_practice)).
+must_not(abc_llp,participate,other_practice).
 
 ?-  not according_to(s34_2_b,may(jason,accept,other_practice_executive)).

@@ -4,6 +4,10 @@
 #pred holds(Rule,may(Y,accept,Z)) :: 'according to @(Rule) it holds that @(Y) is permitted to accept @(Z)'.
 #pred holds(Rule,must_not(Y,accept,Z)) :: 'according to @(Rule) it holds that @(Y) is prohibited from accepting @(Z)'.
 
+holds(Holding) :-
+    according_to(Section,Holding),
+    not defeated(Section,Holding).
+
 %% This tells the defeasibility system that may and must not conlfict wherever they arise.
 opposes(_,may(A,B,C),_,must_not(A,B,C)).
 
@@ -46,18 +50,32 @@ according_to(s34_1_a,described_in_s1(Business)) :- business(Business), derogates
 #pred materially_interferes_with(X,Y,Z) :: '@(X) materially interferes with @(Y) with regard to @(Z)'.
 #pred primary_occupation_of(X,Y) :: '@(Y) is the primary occupation of @(X)'.
 
-according_to(s34_1_b,described_in_s1(Business)) :-
-    business(Business),
-    materially_interferes_with(Business,practicing_as_a_lawyer,Lawyer),
-    primary_occupation_of(Lawyer,practicing_as_a_lawyer).
+% This is necessary to maintain the relationship that if section 34_1_b prohibits accepting, so does 34_1.
+according_to(s34_1,must_not(Actor, accept, Appointment)) :-
+    according_to(s34_1_b,must_not(Actor,accept,Appointment)).
 
-according_to(s34_1_b,described_in_s1(Business)) :-
+% This is required as an alternative to s34_1, because the Actor is not in scope in the described_in_s1/1 predicate.
+according_to(s34_1_b,must_not(Actor, accept, Appointment)) :-
+    legal_practitioner(Actor),
+    executive_appointment(Appointment),
+    associated_with(Appointment,Business),
     business(Business),
-    materially_interferes_with(Business, availability, Lawyer).
+    materially_interferes_with(Business,practicing_as_a_lawyer,Actor),
+    primary_occupation_of(Actor,practicing_as_a_lawyer).
 
-according_to(s34_1_b,described_in_s1(Business)) :-
+according_to(s34_1_b,must_not(Actor, accept, Appointment)) :-
+    legal_practitioner(Actor),
+    executive_appointment(Appointment),
+    associated_with(Appointment,Business),
+    business(Business),
+    materially_interferes_with(Business, availability, Actor).
+
+according_to(s34_1_b,must_not(Actor, accept, Appointment)) :-
+    legal_practitioner(Actor),
+    executive_appointment(Appointment),
+    associated_with(Appointment,Business),
     business(Business), 
-    materially_interferes_with(Business,representation,Lawyer).
+    materially_interferes_with(Business,representation,Actor).
 
 % (c)	any business which is likely to unfairly attract business in the practice of law;
 #pred unfair(X) :: '@(X) is likely to unfairly attract business in the practice of law'.
@@ -163,7 +181,7 @@ according_to(s34_2_b,may(LP,accept,EA)) :-
     law_practice(Other_Practice),
     jurisdiction(Other_Practice,singapore),
     accepts_position_as_representative(LP,EA,Main_Practice),
-    not holds(_,must_not(Main_Practice,participate,Other_Practice)). % this is a low-fidelity representation of the prohibition.
+    not must_not(Main_Practice,participate,Other_Practice). % this is a low-fidelity representation of the prohibition.
 
 defeated(s34_2_b,may(LP,accept,EA)) :-
     according_to(s34_1,must_not(LP,accept,EA)),
@@ -254,7 +272,7 @@ defeated(s34_5,may(LP,accept,EA)) :-
 defeated(s34_1,must_not(LP,accept,EA)) :-
     associated_with(EA,B),
     according_to(s34_5,may(LP,accept,EA)),
-    according_to(s34_1_b,described_in_s1(B)),
+    according_to(s34_1_b,must_not(LP,accept,EA)), %modified from original out-of-scope verison.
     not according_to(s34_1_a,described_in_s1(B)),
     not according_to(s34_1_c,described_in_s1(B)),
     not according_to(s34_1_d,described_in_s1(B)),
