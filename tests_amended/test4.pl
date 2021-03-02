@@ -3,7 +3,7 @@
 %% DESCRIPTION: CEO position should not be prohibited.
 
 #include 'basic_facts.pl'.
-#include '../s34_amended.pl'.
+#include '../r34_amended.pl'.
 
 materially_interferes_with(ceo_megaCorp,practicing_as_a_lawyer,jason).
 
@@ -14,4 +14,4 @@ materially_interferes_with(ceo_megaCorp,practicing_as_a_lawyer,jason).
 primary_occupation_of(jason,playing_baseball).
 
 
-?- not according_to(s34_1_b,must_not(jason,accept,ceo_megaCorp)).
+?- not according_to(r34_1_b,must_not(jason,accept,ceo_megaCorp)).

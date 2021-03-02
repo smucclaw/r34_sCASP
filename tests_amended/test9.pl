@@ -3,7 +3,7 @@
 %% DESCRIPTION: executive position in that other legal practice.
 
 #include 'basic_facts.pl'.
-#include '../s34_amended.pl'.
+#include '../r34_amended.pl'.
 
 law_practice(other_practice).
 partnership(other_practice).
@@ -14,4 +14,4 @@ position(other_practice_executive).
 in(other_practice_executive,other_practice).
 entitles_holder(other_practice_executive).
 
-?-  according_to(s34_2_a,may(jason,accept,other_practice_executive)).
+?-  according_to(r34_2_a,may(jason,accept,other_practice_executive)).

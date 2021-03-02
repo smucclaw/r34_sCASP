@@ -1,7 +1,7 @@
 %% DESCRIPTION: If being the ceo of megaCorp interferes with his availability,
 %% DESCRIPTION: jason should be prohibited from accepting the position.
 #include 'basic_facts.pl'.
-#include '../s34.pl'.
+#include '../r34.pl'.
 
 materially_interferes_with(ceo_megaCorp,availability,jason).
 
@@ -10,4 +10,4 @@ materially_interferes_with(ceo_megaCorp,availability,jason).
 %
 % materially_interferes_with(widget_sales,availability,jason).
 
-?- according_to(s34_1,must_not(jason,accept,ceo_megaCorp)).
+?- according_to(r34_1,must_not(jason,accept,ceo_megaCorp)).

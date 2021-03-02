@@ -3,9 +3,9 @@
 %% DESCRIPTION: second schedule are met, and none of the requirements of section 1 are violated.
 
 #include 'basic_facts.pl'.
-#include '../s34.pl'.
+#include '../r34.pl'.
 
 locum_solicitor(jason).
 conditions_of_second_schedule_satisfied.
 
-?- not according_to(s34_4,may(jason,accept,ceo_megaCorp)).
+?- not according_to(r34_4,may(jason,accept,ceo_megaCorp)).

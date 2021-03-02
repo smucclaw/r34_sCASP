@@ -2,8 +2,8 @@
 %% DESCRIPTION: not provide legal services even if the conditions of the schedule are met.
 
 #include 'basic_facts.pl'.
-#include '../s34.pl'.
+#include '../r34.pl'.
 
 conditions_of_second_schedule_satisfied.
 
-?- not according_to(s34_5,may(jason,accept,ceo_megaCorp)).
+?- not according_to(r34_5,may(jason,accept,ceo_megaCorp)).

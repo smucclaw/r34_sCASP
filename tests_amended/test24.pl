@@ -2,11 +2,11 @@
 %% DESCRIPTION: provide law-related services even if the conditions of the schedule are met.
 
 #include 'basic_facts.pl'.
-#include '../s34_amended.pl'.
+#include '../r34_amended.pl'.
 
 conditions_of_second_schedule_satisfied.
 locum_solicitor(jason).
 provides(megaCorp,litigation).
 legal_service(litigation).
 
-?- not according_to(s34_5,may(jason,accept,ceo_megaCorp)).
+?- not according_to(r34_5,may(jason,accept,ceo_megaCorp)).

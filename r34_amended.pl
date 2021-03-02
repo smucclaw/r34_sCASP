@@ -21,7 +21,7 @@ holds(Holding) :-
 #pred associated_with(A,B) :: '@(A) is associated with @(B)'.
 #pred described_in_s1(B) :: '@(B) is a business described in 34(1)'.
 
-according_to(s34_1,must_not(Actor, accept, Appointment)) :-
+according_to(r34_1,must_not(Actor, accept, Appointment)) :-
     legal_practitioner(Actor),
     executive_appointment(Appointment),
     associated_with(Appointment,Business),
@@ -38,9 +38,9 @@ according_to(s34_1,must_not(Actor, accept, Appointment)) :-
 #pred incompatible_dignity_of_legal_profession(X) :: '@(X) is incompatible with the dignity of the legal profession'.
 #pred derogates_from_dignity_of_legal_profession(X) :: '@(X) derogates from the dignity of the legal profession'.
 
-according_to(s34_1_a,described_in_s1(Business)) :- business(Business), detracts_from_dignity_of_legal_profession(Business).
-according_to(s34_1_a,described_in_s1(Business)) :- business(Business), incompatible_dignity_of_legal_profession(Business).
-according_to(s34_1_a,described_in_s1(Business)) :- business(Business), derogates_from_dignity_of_legal_profession(Business).
+according_to(r34_1_a,described_in_s1(Business)) :- business(Business), detracts_from_dignity_of_legal_profession(Business).
+according_to(r34_1_a,described_in_s1(Business)) :- business(Business), incompatible_dignity_of_legal_profession(Business).
+according_to(r34_1_a,described_in_s1(Business)) :- business(Business), derogates_from_dignity_of_legal_profession(Business).
 
 % (b)	any business which materially interferes with —
 % (i)	the legal practitioner’s primary occupation of practising as a lawyer;
@@ -56,7 +56,7 @@ according_to(s34_1_a,described_in_s1(Business)) :- business(Business), derogates
 % (c)	any business which is likely to unfairly attract business in the practice of law;
 #pred unfair(X) :: '@(X) is likely to unfairly attract business in the practice of law'.
 
-according_to(s34_1_c,described_in_s1(X)) :- unfair(X).
+according_to(r34_1_c,described_in_s1(X)) :- unfair(X).
 
 % (d)	any business which involves the sharing of the legal practitioner’s fees with, 
 % or the payment of a commission to, any unauthorised person for legal work performed 
@@ -68,13 +68,13 @@ according_to(s34_1_c,described_in_s1(X)) :- unfair(X).
 #pred unauthorized(X) :: '@(X) is unauthorised to peform legal work'.
 #pred involves_paying_commission(X,Y,Z) :: '@(X) involves paying @(Y) to @(Z)'.
 
-according_to(s34_1_d,described_in_s1(X)) :- involves_sharing_fees(X,Fees,Recipient), as_compensation_for(Fees,Work), performed_by(Work,Lawyer), legal_work(Work), unauthorized(Recipient).
-according_to(s34_1_d,described_in_s1(X)) :- involves_paying_commission(X,Fees,Recipient), as_compensation_for(Fees,Work), performed_by(Work,Lawyer), legal_work(Work), unauthorized(Recipient).
+according_to(r34_1_d,described_in_s1(X)) :- involves_sharing_fees(X,Fees,Recipient), as_compensation_for(Fees,Work), performed_by(Work,Lawyer), legal_work(Work), unauthorized(Recipient).
+according_to(r34_1_d,described_in_s1(X)) :- involves_paying_commission(X,Fees,Recipient), as_compensation_for(Fees,Work), performed_by(Work,Lawyer), legal_work(Work), unauthorized(Recipient).
 
 % (e)	any business set out in the First Schedule;
 #pred described_in_first_schedule(X) :: '@(X) is set out in the first schedule'.
 
-according_to(s34_1_e,described_in_s1(X)) :- described_in_first_schedule(X).
+according_to(r34_1_e,described_in_s1(X)) :- described_in_first_schedule(X).
 
 % (f)	any business which is prohibited by —
 % (i)	the Act;
@@ -84,10 +84,10 @@ according_to(s34_1_e,described_in_s1(X)) :- described_in_first_schedule(X).
 %  etiquette, conduct and discipline) issued by the Council or the Society.
 #pred prohibited_business(X) :: '@(X) is a business which is prohibited as defined by section 34(1)(f)'.
 
-according_to(s34_1_f,described_in_s1(X)) :- prohibited_business(X).
+according_to(r34_1_f,described_in_s1(X)) :- prohibited_business(X).
 
 
-%% THE AMENDMENT INSERTS THIS SECTION IN PLACE OF s34(1)(b)
+%% THE AMENDMENT INSERTS THIS SECTION IN PLACE OF r34(1)(b)
 %% 1A (to place it between 1 and 2): A legal practitioner must not accept any executive appointment that:
 %% materially interferes with —
 % (i)	the legal practitioner’s primary occupation of practising as a lawyer;
@@ -96,21 +96,21 @@ according_to(s34_1_f,described_in_s1(X)) :- prohibited_business(X).
 % (iii)	the representation of the legal practitioner’s clients.
 
 %% NOTE: In the legislative text, the numbering would be different. In the code, the number of
-%% the section is left as s34_1_b solely so that we do not need to rewrite the tests in order
+%% the section is left as r34_1_b solely so that we do not need to rewrite the tests in order
 %% for them to work.
 
-according_to(s34_1_b,must_not(Actor, accept, Appointment)) :-
+according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
     legal_practitioner(Actor),
     executive_appointment(Appointment),
     materially_interferes_with(Appointment,practicing_as_a_lawyer,Lawyer),
     primary_occupation_of(Lawyer,practicing_as_a_lawyer).
 
-according_to(s34_1_b,must_not(Actor, accept, Appointment)) :-
+according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
     legal_practitioner(Actor),
     executive_appointment(Appointment),
     materially_interferes_with(Appointment,availability,Lawyer).
 
-according_to(s34_1_b,must_not(Actor, accept, Appointment)) :-
+according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
     legal_practitioner(Actor),
     executive_appointment(Appointment),
     materially_interferes_with(Appointment,representation,Lawyer).
@@ -132,7 +132,7 @@ according_to(s34_1_b,must_not(Actor, accept, Appointment)) :-
 #pred may(A,accept,B) :: '@(A) may accept an appoinment to @(B)'.
 #pred partner_sp_or_director_of(X,Y) :: '@(X) is a partner, sole proprietor, or director of @(Y)'.
 
-according_to(s34_2_a,may(LP,accept,EA)) :-
+according_to(r34_2_a,may(LP,accept,EA)) :-
     legal_practitioner(LP),
     in(LP,Main_Practice),
     law_practice(Main_Practice),
@@ -144,13 +144,13 @@ according_to(s34_2_a,may(LP,accept,EA)) :-
     not owner_and_not_partner_of(Other_Practice,Main_Practice).
 
 % THIS AMENDMENT AMENDS THIS DEFEASIBILITY STATEMENT TO ADD THE FOLLOWING
-defeated(s34_2_a,may(LP,accept,EA)) :-
-    according_to(s34_1_b,must_not(LP,accept,EA)),
-    not defeated(s34_1_b,must_not(LP,accept,EA)).
+defeated(r34_2_a,may(LP,accept,EA)) :-
+    according_to(r34_1_b,must_not(LP,accept,EA)),
+    not defeated(r34_1_b,must_not(LP,accept,EA)).
 
-defeated(s34_2_a,may(LP,accept,EA)) :-
-    according_to(s34_1,must_not(LP,accept,EA)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
+defeated(r34_2_a,may(LP,accept,EA)) :-
+    according_to(r34_1,must_not(LP,accept,EA)),
+    not defeated(r34_1,must_not(LP,accept,EA)).
 
 
 owner_of(X,Y) :-
@@ -181,7 +181,7 @@ owner_and_not_partner_of(Y,Z) :-
 #pred accepts_position_as_representative(A,B,C) :: '@(A) accepts the position @(B) as a representative of @(C)'.
 #pred must_not(A,participate,B) :: '@(A) is prohibited from participating in @(B)'.
 
-according_to(s34_2_b,may(LP,accept,EA)) :-
+according_to(r34_2_b,may(LP,accept,EA)) :-
     legal_practitioner(LP),
     in(LP,Main_Practice),
     law_practice(Main_Practice),
@@ -193,22 +193,22 @@ according_to(s34_2_b,may(LP,accept,EA)) :-
     accepts_position_as_representative(LP,EA,Main_Practice),
     not holds(must_not(Main_Practice,participate,Other_Practice)). % this is a low-fidelity representation of the prohibition.
 
-defeated(s34_2_b,may(LP,accept,EA)) :-
-    according_to(s34_1,must_not(LP,accept,EA)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
+defeated(r34_2_b,may(LP,accept,EA)) :-
+    according_to(r34_1,must_not(LP,accept,EA)),
+    not defeated(r34_1,must_not(LP,accept,EA)).
     
 
 % THIS AMENDMENT ADDS:
-defeated(s34_2_b,may(LP,accept,EA)) :-
-    according_to(s34_1_b,must_not(LP,accept,EA)),
-    not defeated(s34_1_b,must_not(LP,accept,EA)).
+defeated(r34_2_b,may(LP,accept,EA)) :-
+    according_to(r34_1_b,must_not(LP,accept,EA)),
+    not defeated(r34_1_b,must_not(LP,accept,EA)).
 
 
 % (3)  Subject to paragraph (1), a legal practitioner may accept an executive appointment 
 % in a business entity which provides law-related services.
 #pred provides(A,B) :: '@(A) provides @(B)'.
 
-according_to(s34_3,may(LP,accept,EA)) :-
+according_to(r34_3,may(LP,accept,EA)) :-
     legal_practitioner(LP),
     executive_appointment(EA),
     business_entity(BE),
@@ -216,15 +216,15 @@ according_to(s34_3,may(LP,accept,EA)) :-
     provides(BE,LRS),
     law_related_service(LRS).
 
-defeated(s34_3,may(LP,accept,EA)) :-
-    according_to(s34_1,must_not(LP,accept,EA)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
+defeated(r34_3,may(LP,accept,EA)) :-
+    according_to(r34_1,must_not(LP,accept,EA)),
+    not defeated(r34_1,must_not(LP,accept,EA)).
 
 % THIS AMENDMENT ADDS:
 
-defeated(s34_3,may(LP,accept,EA)) :-
-    according_to(s34_1_b,must_not(LP,accept,EA)),
-    not defeated(s34_1_b,must_not(LP,accept,EA)).
+defeated(r34_3,may(LP,accept,EA)) :-
+    according_to(r34_1_b,must_not(LP,accept,EA)),
+    not defeated(r34_1_b,must_not(LP,accept,EA)).
 
 
 % (4)  Subject to paragraph (1), a legal practitioner (not being a locum solicitor) may 
@@ -235,7 +235,7 @@ defeated(s34_3,may(LP,accept,EA)) :-
 #pred legal_service(X) :: '@(X) is a legal service'.
 #pred conditions_of_second_schedule_satisfied :: 'the conditions of the second schedule are satisfied'.
 
-according_to(s34_4,may(LP,accept,EA)) :-
+according_to(r34_4,may(LP,accept,EA)) :-
     legal_practitioner(LP),
     not locum_solicitor(LP),
     executive_appointment(EA),
@@ -244,15 +244,15 @@ according_to(s34_4,may(LP,accept,EA)) :-
     not provides_legal_or_law_related_services(BE),
     conditions_of_second_schedule_satisfied.
 
-defeated(s34_4,may(LP,accept,EA)) :-
-    according_to(s34_1,must_not(LP,accept,EA)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
+defeated(r34_4,may(LP,accept,EA)) :-
+    according_to(r34_1,must_not(LP,accept,EA)),
+    not defeated(r34_1,must_not(LP,accept,EA)).
 
 % This amendment adds:
 
-defeated(s34_4,may(LP,accept,EA)) :-
-    according_to(s34_1_b,must_not(LP,accept,EA)),
-    not defeated(s34_1_b,must_not(LP,accept,EA)).
+defeated(r34_4,may(LP,accept,EA)) :-
+    according_to(r34_1_b,must_not(LP,accept,EA)),
+    not defeated(r34_1_b,must_not(LP,accept,EA)).
 
 % (5)  Despite paragraph (1)(b), but subject to paragraph (1)(a) and (c) to (f), 
 % a locum solicitor may accept an executive appointment in a business entity which 
@@ -261,7 +261,7 @@ defeated(s34_4,may(LP,accept,EA)) :-
 
 #pred locum_solicitor(X) :: '@(X) is a locum solicitor'.
 
-according_to(s34_5,may(LP,accept,EA)) :-
+according_to(r34_5,may(LP,accept,EA)) :-
     legal_practitioner(LP),
     locum_solicitor(LP),
     executive_appointment(EA),
@@ -271,13 +271,13 @@ according_to(s34_5,may(LP,accept,EA)) :-
     conditions_of_second_schedule_satisfied.
 
 %% WITH THIS AMENDMENT, THE DEFEASIBILITY STATEMENT IS SIMPLIFIED
-defeated(s34_5,may(LP,accept,EA)) :-
-    according_to(s34_1,must_not(LP,accept,EA)),
-    not defeated(s34_1,must_not(LP,accept,EA)).
+defeated(r34_5,may(LP,accept,EA)) :-
+    according_to(r34_1,must_not(LP,accept,EA)),
+    not defeated(r34_1,must_not(LP,accept,EA)).
 
-defeated(s34_1_b,must_not(LP,accept,EA)) :-
-    according_to(s34_5,may(LP,accept,EA)),
-    not defeated(s34_5,may(LP,accept,EA)).
+defeated(r34_1_b,must_not(LP,accept,EA)) :-
+    according_to(r34_5,may(LP,accept,EA)),
+    not defeated(r34_5,may(LP,accept,EA)).
 
 #pred provides_legal_or_law_related_services(X) :: '@(X) provides legal or law-related services'.
 
@@ -292,56 +292,56 @@ provies_legal_or_law_related_services(BE) :-
 % (6)  Except as provided in paragraphs (2) to (5) —
 % (a)	a legal practitioner in a Singapore law practice must not accept any executive 
 % appointment in another Singapore law practice; and
-according_to(s34_6_a,must_not(LP,accept,EA)) :-
+according_to(r34_6_a,must_not(LP,accept,EA)) :-
     legal_practitioner(LP),
     executive_appointment(EA),
     law_practice(Other_Practice),
     in(EA,Other_Practice),
     not in(LP,Other_Practice).
 
-defeated(s34_6_a,must_not(LP,accept,EA)) :-
-    according_to(s34_2_a,may(LP,accept,EA)),
-    not defeated(s34_2_a,may(LP,accept,EA)).
-defeated(s34_6_a,must_not(LP,accept,EA)) :-
-    according_to(s34_2_b,may(LP,accept,EA)),
-    not defeated(s34_2_b,may(LP,accept,EA)).
-defeated(s34_6_a,must_not(LP,accept,EA)) :-
-    according_to(s34_3,may(LP,accept,EA)),
-    not defeated(s34_3,may(LP,accept,EA)).
-defeated(s34_6_a,must_not(LP,accept,EA)) :-
-    according_to(s34_4,may(LP,accept,EA)),
-    not defeated(s34_4,may(LP,accept,EA)).
-defeated(s34_6_a,must_not(LP,accept,EA)) :-
-    according_to(s34_5,may(LP,accept,EA)),
-    not defeated(s34_5,may(LP,accept,EA)).
+defeated(r34_6_a,must_not(LP,accept,EA)) :-
+    according_to(r34_2_a,may(LP,accept,EA)),
+    not defeated(r34_2_a,may(LP,accept,EA)).
+defeated(r34_6_a,must_not(LP,accept,EA)) :-
+    according_to(r34_2_b,may(LP,accept,EA)),
+    not defeated(r34_2_b,may(LP,accept,EA)).
+defeated(r34_6_a,must_not(LP,accept,EA)) :-
+    according_to(r34_3,may(LP,accept,EA)),
+    not defeated(r34_3,may(LP,accept,EA)).
+defeated(r34_6_a,must_not(LP,accept,EA)) :-
+    according_to(r34_4,may(LP,accept,EA)),
+    not defeated(r34_4,may(LP,accept,EA)).
+defeated(r34_6_a,must_not(LP,accept,EA)) :-
+    according_to(r34_5,may(LP,accept,EA)),
+    not defeated(r34_5,may(LP,accept,EA)).
 
 % (b)	a legal practitioner must not accept any executive appointment in a business entity.
-according_to(s34_6_b,must_not(LP,accept,EA)) :-
+according_to(r34_6_b,must_not(LP,accept,EA)) :-
     legal_practitioner(LP),
     executive_appointment(EA),
     business_entity(BE),
     in(EA,BE).
 
-defeated(s34_6_b,must_not(LP,accept,EA)) :-
-    according_to(s34_2_a,may(LP,accept,EA)),
-    not defeated(s34_2_a,may(LP,accept,EA)).
-defeated(s34_6_b,must_not(LP,accept,EA)) :-
-    according_to(s34_2_b,may(LP,accept,EA)),
-    not defeated(s34_2_b,may(LP,accept,EA)).
-defeated(s34_6_b,must_not(LP,accept,EA)) :-
-    according_to(s34_3,may(LP,accept,EA)),
-    not defeated(s34_3,may(LP,accept,EA)).
-defeated(s34_6_b,must_not(LP,accept,EA)) :-
-    according_to(s34_4,may(LP,accept,EA)),
-    not defeated(s34_4,may(LP,accept,EA)).
-defeated(s34_6_b,must_not(LP,accept,EA)) :-
-    according_to(s34_5,may(LP,accept,EA)),
-    not defeated(s34_5,may(LP,accept,EA)).
+defeated(r34_6_b,must_not(LP,accept,EA)) :-
+    according_to(r34_2_a,may(LP,accept,EA)),
+    not defeated(r34_2_a,may(LP,accept,EA)).
+defeated(r34_6_b,must_not(LP,accept,EA)) :-
+    according_to(r34_2_b,may(LP,accept,EA)),
+    not defeated(r34_2_b,may(LP,accept,EA)).
+defeated(r34_6_b,must_not(LP,accept,EA)) :-
+    according_to(r34_3,may(LP,accept,EA)),
+    not defeated(r34_3,may(LP,accept,EA)).
+defeated(r34_6_b,must_not(LP,accept,EA)) :-
+    according_to(r34_4,may(LP,accept,EA)),
+    not defeated(r34_4,may(LP,accept,EA)).
+defeated(r34_6_b,must_not(LP,accept,EA)) :-
+    according_to(r34_5,may(LP,accept,EA)),
+    not defeated(r34_5,may(LP,accept,EA)).
 
 % (7)  To avoid doubt, nothing in this rule prohibits a legal practitioner 
 % from accepting any appointment in any institution set out in the Third Schedule.
 
-according_to(s34_7,may(LP,accept,P)) :-
+according_to(r34_7,may(LP,accept,P)) :-
     legal_practitioner(LP),
     position(P),
     institution(I),
@@ -349,7 +349,7 @@ according_to(s34_7,may(LP,accept,P)) :-
     in_third_schedule(I).
 
 % Consider asserting that it is strict?
-% -defeated(s34_7,may(LP,accept,P)) :- true.
+% -defeated(r34_7,may(LP,accept,P)) :- true.
 
 % TODO: it would be useful to test whether or not this rule changes anything.
 % TODO: it would also be instructive to implement this as a formal verification task, as opposed to a new rule.

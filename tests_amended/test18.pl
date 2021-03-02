@@ -3,7 +3,7 @@
 %% DESCRIPTION: to accept that appointment.
 
 #include 'basic_facts.pl'.
-#include '../s34_amended.pl'.
+#include '../r34_amended.pl'.
 
 institution(smucclaw).
 position(researcher).
@@ -11,4 +11,4 @@ entitles_holder(researcher).
 in(researcher,smucclaw).
 in_third_schedule(smucclaw).
 
-?- according_to(s34_7,may(jason,accept,researcher)).
+?- according_to(r34_7,may(jason,accept,researcher)).

@@ -3,7 +3,7 @@
 %% DESCRIPTION: people for jason's legal work.
 
 #include 'basic_facts.pl'.
-#include '../s34.pl'.
+#include '../r34.pl'.
 
 unauthorized(meng).
 involves_paying_commission(widget_sales, meng_commission, meng).
@@ -11,4 +11,4 @@ as_compensation_for(meng_commission,jason_work).
 legal_work(jason_work).
 performed_by(jason_work,jason).
 
-?-  according_to(s34_1,must_not(jason,accept,ceo_megaCorp)).
+?-  according_to(r34_1,must_not(jason,accept,ceo_megaCorp)).

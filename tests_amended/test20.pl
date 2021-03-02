@@ -2,7 +2,7 @@
 %% DESCRIPTION: because of section 34(6)(a).
 
 #include 'basic_facts.pl'.
-#include '../s34_amended.pl'.
+#include '../r34_amended.pl'.
 
 law_practice(other_practice).
 jurisdiction(other_practice,singapore).
@@ -10,4 +10,4 @@ position(other_practice_job).
 entitles_holder(other_practice_job).
 in(other_practice_job,other_practice).
 
-?- according_to(s34_6_a,must_not(jason,accept,other_practice_job)).
+?- according_to(r34_6_a,must_not(jason,accept,other_practice_job)).

@@ -3,7 +3,7 @@
 %% DESCRIPTION: executive position in that other legal practice.
 
 #include 'basic_facts.pl'.
-#include '../s34.pl'.
+#include '../r34.pl'.
 
 law_practice(other_practice).
 partnership(other_practice).
@@ -16,7 +16,7 @@ position(other_practice_executive).
 in(other_practice_executive,other_practice).
 entitles_holder(other_practice_executive).
 
-?-  not according_to(s34_2_a,may(jason,accept,other_practice_executive)).
+?-  not according_to(r34_2_a,may(jason,accept,other_practice_executive)).
 
 % This tests only for whether section 34(2)(a) stops working when there are additional non-shared owners
 % it does not check to see whether in that circumstance jason is prohibited.

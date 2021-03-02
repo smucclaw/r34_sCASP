@@ -2,7 +2,7 @@
 %% DESCRIPTION: jason should be prohibited from accepting the position.
 
 #include 'basic_facts.pl'.
-#include '../s34_amended.pl'.
+#include '../r34_amended.pl'.
 
 materially_interferes_with(ceo_megaCorp,availability,jason).
 
@@ -11,4 +11,4 @@ materially_interferes_with(ceo_megaCorp,availability,jason).
 %
 % materially_interferes_with(widget_sales,availability,jason).
 
-?- according_to(s34_1_b,must_not(jason,accept,ceo_megaCorp)).
+?- according_to(r34_1_b,must_not(jason,accept,ceo_megaCorp)).

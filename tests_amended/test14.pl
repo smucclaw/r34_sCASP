@@ -1,7 +1,7 @@
 %% DESCRIPTION: Jason may accept an executive appointment in a business entity that provides law-related services.
 
 #include 'basic_facts.pl'.
-#include '../s34_amended.pl'.
+#include '../r34_amended.pl'.
 
 company(blah_corp).
 provides(blah_corp,corporate_registry_search).
@@ -13,4 +13,4 @@ in(blah_ceo,blah_corp).
 carries_on(blah_corp,search_services).
 business(search_services).
 
-?-  according_to(s34_3,may(jason,accept,blah_ceo)).
+?-  according_to(r34_3,may(jason,accept,blah_ceo)).

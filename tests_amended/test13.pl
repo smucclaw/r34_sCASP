@@ -6,7 +6,7 @@
 %% DESCRIPTION: wins.
 
 #include 'basic_facts.pl'.
-#include '../s34_amended.pl'.
+#include '../r34_amended.pl'.
 
 law_practice(other_practice).
 partnership(other_practice).
@@ -25,6 +25,6 @@ business(predatory_lending).
 carries_on(other_practice,predatory_lending).
 derogates_from_dignity_of_legal_profession(predatory_lending).
 
-?- according_to(s34_1,must_not(jason,accept,other_practice_executive)),
-   according_to(s34_2_b,may(jason,accept,other_practice_executive)),
+?- according_to(r34_1,must_not(jason,accept,other_practice_executive)),
+   according_to(r34_2_b,may(jason,accept,other_practice_executive)),
    holds(must_not(jason,accept,other_practice_executive)).
