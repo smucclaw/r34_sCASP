@@ -1,4 +1,4 @@
-# s(CASP) encoding of section 34
+# s(CASP) encoding of Rule 34
 
 This is an encoding in s(CASP) of rule 34 of Singapore's Legal Profession (Professional Conduct) Rules 2015.
 The source material is available [here](https://sso.agc.gov.sg/SL/LPA1966-S706-2015#pr34-).
