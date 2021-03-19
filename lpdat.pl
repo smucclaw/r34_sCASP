@@ -8,6 +8,7 @@
 #pred according_to(R,C) :: 'according to rule @(R), the conclusion @(C) holds'.
 #pred overrides(R1,C1,R2,C2) :: 'the conclusion @(C1) from rule @(R1) overrides the conclusion @(C2) from rule @(R2)'.
 #pred opposes(R1,C1,R2,C2) :: 'the conclusion @(C1) from rule @(R1) conflicts with the conclusion @(C2) from rule @(R2)'.
+#pred opposes2(R1,C1,R2,C2) :: 'the conclusion @(C1) from rule @(R1) conflicts with the conclusion @(C2) from rule @(R2)'.
 
 % Oppositions must be stated explicitly, and must be ground at evaluation time.
 opposes(R1,C1,R2,C2) :- opposes(R2,C2,R1,C1).

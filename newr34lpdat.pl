@@ -1,6 +1,6 @@
 #include 'lpdat.pl'.
-#pred legally_holds(may(Y,accept,Z)) :: 'it holds that @(Y) is permitted to accept @(Z)'.
-#pred legally_holds(must_not(Y,accept,Z)) :: 'it holds that @(Y) is prohibited from accepting @(Z)'.
+#pred legally_holds(Rule,may(Y,accept,Z)) :: 'it holds in accordance with @(Rule) that @(Y) is permitted to accept @(Z)'.
+#pred legally_holds(Rule,must_not(Y,accept,Z)) :: 'it holds in accordance with @(Rule) that @(Y) is prohibited from accepting @(Z)'.
 
 
 % PREDICATE DEFINITIONS
@@ -28,6 +28,9 @@
 #pred entitles_holder(X) :: '@(X) entitles the holder to perform executive functions'.
 #pred -executive_appointment(X) :: '@(X) is not an executive appointment for the purposes of section 34'.
 #pred executive_appointment(X) :: '@(X) is an executive appointment for the purposes of section 34'.
+#pred executive_appointment_associated_with_a_business(X,Y) :: '@(X) is an executive appointment associated with the business @(Y)'.
+#pred executive_appointment_in_a_business_entity(X,Y) :: '@(X) is an executive appointment in the business entity @(Y)'.
+#pred executive_appointment_in_a_law_practice(X,Y) :: '@(X) is an executive appointment in the law practice @(Y)'.
 #pred -for_profit(X) :: '@(X) is not for profit'.
 #pred for_profit(X) :: '@(X) is for profit'.
 #pred foreign_law_practice(X) :: '@(X) is a foreign law practice'.
@@ -53,11 +56,13 @@
 #pred locum_solicitor(X) :: '@(X) is a locum solicitor'.
 #pred materially_interferes_with(X,Y,Z) :: '@(X) materially interferes with @(Y) with regard to @(Z)'.
 #pred may(A,accept,B) :: '@(A) may accept an appoinment to @(B)'.
+#pred member_of(A,B) :: '@(A) is a member of @(B)'.
 #pred must_not(A,accept,B) :: '@(A) must not accept @(B)'.
 #pred must_not(A,participate,B) :: '@(A) is prohibited from participating in @(B)'.
 #pred non_executive_director(X) :: '@(X) is a non-executive directorship'.
 #pred owner_and_not_partner_of(Y,Z) :: 'someone who is a legal or beneficial owner of @(Y) is not a sole proprietor, partner, or director of @(Z)'.
 #pred owner_of(X,Y) :: '@(X) is the legal or beneficial owner of @(Y)'.
+#pred participation_prohibited(X,Y) :: '@(X) is prohibited from participating in @(Y)'.
 #pred partner_of(X,Y) :: '@(X) is a partner of @(Y)'.
 #pred partner_sp_or_director_of(X,Y) :: '@(X) is a partner, sole proprietor, or director of @(Y)'.
 #pred partnership(X) :: '@(X) is a partnership'.
@@ -119,6 +124,7 @@
 %#abducible non_executive_director(X).
 %#abducible owner_and_not_partner_of(Y,Z).
 %#abducible owner_of(X,Y).
+%#abducible participation_prohibited(X,Y).
 %#abducible partner_of(X,Y).
 %#abducible partner_sp_or_director_of(X,Y).
 %#abducible partnership(X).
@@ -135,8 +141,9 @@
 %#abducible unauthorized(X).
 %#abducible unfair(X).
 
-% Indicate to lpdat that "may" and "must not" are opposites.
-opposes(_,may(A,B,C),_,must_not(A,B,C)).
+% Indicate to lpdat that opposition is implied by overriding, so we do not
+% have to make it explicit for each rule.
+opposes(R1,C1,R2,C2) :- overrides(R1,C1,R2,C2), according_to(R1,C1), according_to(R2,C2).
 
 % RULE 34
 % 34. Executive appointments
@@ -150,15 +157,14 @@ according_to(r34_1,must_not(Actor, accept, Appointment)) :-
     executive_appointment(Appointment),
     associated_with(Appointment,Business),
     business(Business),
-    %legally_holds(described_in_s1(Business)).
-    according_to(_,described_in_s1(Business)). %temporary version before defeasibility.
+    according_to(Rule,described_in_s1(Business)).
 
 % (a)	any business which detracts from, is incompatible with, or derogates from the dignity of,
 % the legal profession;
 
-%according_to(r34_1_a,described_in_s1(Business)) :- business(Business), detracts_from_dignity_of_legal_profession(Business).
-%according_to(r34_1_a,described_in_s1(Business)) :- business(Business), incompatible_dignity_of_legal_profession(Business).
-%according_to(r34_1_a,described_in_s1(Business)) :- business(Business), derogates_from_dignity_of_legal_profession(Business).
+according_to(r34_1_a,described_in_s1(Business)) :- business(Business), detracts_from_dignity_of_legal_profession(Business).
+according_to(r34_1_a,described_in_s1(Business)) :- business(Business), incompatible_dignity_of_legal_profession(Business).
+according_to(r34_1_a,described_in_s1(Business)) :- business(Business), derogates_from_dignity_of_legal_profession(Business).
 
 % (b) Repealed in amendment.
 
@@ -227,7 +233,7 @@ according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
 
 according_to(r34_2_a,may(LP,accept,EA)) :-
     legal_practitioner(LP),
-    in(LP,Main_Practice),
+    member_of(LP,Main_Practice),
     law_practice_in_singapore(Main_Practice),
     executive_appointment_in_a_law_practice(EA,Other_Practice),
     law_practice_in_singapore(Other_Practice),
@@ -272,7 +278,7 @@ according_to(r34_2_b,may(LP,accept,EA)) :-
     law_practice_in_singapore(Other_Practice),
     Main_Practice \= Other_Practice,
     accepts_position_as_representative(LP,EA,Main_Practice),
-    not holds(must_not(Main_Practice,participate,Other_Practice)). % this is a low-fidelity representation of the prohibition.
+    not participation_prohibited(Main_Practice,Other_Practice). % this is a low-fidelity representation of the prohibition.
 
 overrides(r34_1,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
 overrides(r34_1_b,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
@@ -320,7 +326,7 @@ according_to(r34_5,may(LP,accept,EA)) :-
     conditions_of_second_schedule_satisfied.
 
 overrides(r34_1,must_not(LP,accept,EA),r34_5,may(LP,accept,EA)).
-overrides(r34_5,may(LP,accept,EA),r34_1,must_not(LP,accept,EA)).
+overrides(r34_5,may(LP,accept,EA),r34_1_b,must_not(LP,accept,EA)).
 
 provides_legal_or_law_related_services(BE) :-
     provides(BE,Serv),

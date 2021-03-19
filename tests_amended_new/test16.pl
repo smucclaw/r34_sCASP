@@ -12,4 +12,4 @@ conditions_of_second_schedule_satisfied.
 
 ?- according_to(r34_1,must_not(jason,accept,ceo_megaCorp)),
    according_to(r34_4,may(jason,accept,ceo_megaCorp)),
-   legally_holds(must_not(jason,accept,ceo_megaCorp)).
+   legally_holds(r34_1,must_not(jason,accept,ceo_megaCorp)).
