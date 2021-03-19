@@ -2,7 +2,7 @@
 %% DESCRIPTION: Is likely to unfairly attract business in law.
 
 #include 'basic_facts.pl'.
-#include '../newr34.pl'.
+#include '../newr34lpdat.pl'.
 
 unfair(widget_sales).
 

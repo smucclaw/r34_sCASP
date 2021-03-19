@@ -3,7 +3,7 @@
 %% DESCRIPTION: people for jason's legal work.
 
 #include 'basic_facts.pl'.
-#include '../newr34.pl'.
+#include '../newr34lpdat.pl'.
 
 unauthorized(meng).
 involves_paying_commission(widget_sales, meng_commission, meng).

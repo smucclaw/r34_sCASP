@@ -2,7 +2,7 @@
 %% DESCRIPTION: jason should be prohibited from accepting the position.
 
 #include 'basic_facts.pl'.
-#include '../newr34.pl'.
+#include '../newr34lpdat.pl'.
 
 materially_interferes_with(ceo_megaCorp,availability,jason).
 

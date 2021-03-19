@@ -6,7 +6,7 @@
 %% DESCRIPTION: wins.
 
 #include 'basic_facts.pl'.
-#include '../newr34.pl'.
+#include '../newr34lpdat.pl'.
 
 law_practice(other_practice).
 partnership(other_practice).
@@ -27,4 +27,4 @@ derogates_from_dignity_of_legal_profession(predatory_lending).
 
 ?- according_to(r34_1,must_not(jason,accept,other_practice_executive)),
    according_to(r34_2_b,may(jason,accept,other_practice_executive)),
-   holds(must_not(jason,accept,other_practice_executive)).
+   legally_holds(must_not(jason,accept,other_practice_executive)).

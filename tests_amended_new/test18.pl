@@ -3,7 +3,7 @@
 %% DESCRIPTION: to accept that appointment.
 
 #include 'basic_facts.pl'.
-#include '../newr34.pl'.
+#include '../newr34lpdat.pl'.
 
 institution(smucclaw).
 position(researcher).

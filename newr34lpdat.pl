@@ -1,3 +1,8 @@
+#include 'lpdat.pl'.
+#pred legally_holds(may(Y,accept,Z)) :: 'it holds that @(Y) is permitted to accept @(Z)'.
+#pred legally_holds(must_not(Y,accept,Z)) :: 'it holds that @(Y) is prohibited from accepting @(Z)'.
+
+
 % PREDICATE DEFINITIONS
 #pred accepts_position_as_representative(A,B,C) :: '@(A) accepts the position @(B) as a representative of @(C)'.
 #pred according_to(X,described_in_s1(Y)) :: 'according to @(X), @(Y) is described in section 1'.
@@ -27,9 +32,6 @@
 #pred for_profit(X) :: '@(X) is for profit'.
 #pred foreign_law_practice(X) :: '@(X) is a foreign law practice'.
 #pred formal_law_alliance(X) :: '@(X) is a formal law alliance'.
-#pred holds(may(Y,accept,Z)) :: 'it holds that @(Y) is permitted to accept @(Z)'.
-#pred holds(must_not(Y,accept,Z)) :: 'it holds that @(Y) is prohibited from accepting @(Z)'.
-#pred holds(X) :: '@(X) holds'.
 #pred in_fourth_schedule(X) :: '@(X) is listed in the fourth schedule'.
 #pred in_third_schedule(X) :: '@(X) is listed in the third schedule'.
 #pred in(X,Y) :: '@(X) is in @(Y)'.
@@ -133,12 +135,8 @@
 %#abducible unauthorized(X).
 %#abducible unfair(X).
 
-legally_holds(Holding) :-
-    according_to(Section,Holding),
-    not defeated(Section,Holding).
-
-% I think this is causing a major slowdown because answering any question in the system
-% requires answering all of them.
+% Indicate to lpdat that "may" and "must not" are opposites.
+opposes(_,may(A,B,C),_,must_not(A,B,C)).
 
 % RULE 34
 % 34. Executive appointments
@@ -147,7 +145,6 @@ legally_holds(Holding) :-
 % 34.—(1)  A legal practitioner must not accept any executive appointment associated with 
 % any of the following businesses:
 
-section(r34_1).
 according_to(r34_1,must_not(Actor, accept, Appointment)) :-
     legal_practitioner(Actor),
     executive_appointment(Appointment),
@@ -159,7 +156,6 @@ according_to(r34_1,must_not(Actor, accept, Appointment)) :-
 % (a)	any business which detracts from, is incompatible with, or derogates from the dignity of,
 % the legal profession;
 
-section(r34_1_a).
 %according_to(r34_1_a,described_in_s1(Business)) :- business(Business), detracts_from_dignity_of_legal_profession(Business).
 %according_to(r34_1_a,described_in_s1(Business)) :- business(Business), incompatible_dignity_of_legal_profession(Business).
 %according_to(r34_1_a,described_in_s1(Business)) :- business(Business), derogates_from_dignity_of_legal_profession(Business).
@@ -168,20 +164,18 @@ section(r34_1_a).
 
 % (c)	any business which is likely to unfairly attract business in the practice of law;
 
-section(r34_1_c).
 according_to(r34_1_c,described_in_s1(X)) :- unfair(X).
 
 % (d)	any business which involves the sharing of the legal practitioner’s fees with, 
 % or the payment of a commission to, any unauthorised person for legal work performed 
 % by the legal practitioner;
 
-section(r34_1_d).
 according_to(r34_1_d,described_in_s1(X)) :- involves_sharing_fees(X,Fees,Recipient), as_compensation_for(Fees,Work), performed_by(Work,Lawyer), legal_work(Work), unauthorized(Recipient).
 according_to(r34_1_d,described_in_s1(X)) :- involves_paying_commission(X,Fees,Recipient), as_compensation_for(Fees,Work), performed_by(Work,Lawyer), legal_work(Work), unauthorized(Recipient).
 
 
 % (e)	any business set out in the First Schedule;
-section(r34_1_e).
+
 according_to(r34_1_e,described_in_s1(X)) :- described_in_first_schedule(X).
 
 % (f)	any business which is prohibited by —
@@ -191,7 +185,6 @@ according_to(r34_1_e,described_in_s1(X)) :- described_in_first_schedule(X).
 % (iv)	any practice directions, guidance notes and rulings (relating to professional practice,
 %  etiquette, conduct and discipline) issued by the Council or the Society.
 
-section(r34_1_f).
 according_to(r34_1_f,described_in_s1(X)) :- prohibited_business(X).
 
 % AMENDED RULE 34(1A)
@@ -206,7 +199,6 @@ according_to(r34_1_f,described_in_s1(X)) :- prohibited_business(X).
 %% the section is left as r34_1_b solely so that we do not need to rewrite the tests in order
 %% for them to work.
 
-section(r34_1_b).
 according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
     legal_practitioner(Actor),
     executive_appointment(Appointment),
@@ -233,7 +225,6 @@ according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
 % (a)	every legal or beneficial owner of the related practice is the sole proprietor, 
 % or a partner or director, of the main practice;
 
-section(r34_2_a).
 according_to(r34_2_a,may(LP,accept,EA)) :-
     legal_practitioner(LP),
     in(LP,Main_Practice),
@@ -243,14 +234,8 @@ according_to(r34_2_a,may(LP,accept,EA)) :-
     Main_Practice \= Other_Practice,
     not owner_and_not_partner_of(Other_Practice,Main_Practice).
 
-% THIS AMENDMENT AMENDS THIS DEFEASIBILITY STATEMENT TO ADD THE FOLLOWING
-defeated(r34_2_a,may(LP,accept,EA)) :-
-    according_to(r34_1_b,must_not(LP,accept,EA)),
-    not defeated(r34_1_b,must_not(LP,accept,EA)).
-
-defeated(r34_2_a,may(LP,accept,EA)) :-
-    according_to(r34_1,must_not(LP,accept,EA)),
-    not defeated(r34_1,must_not(LP,accept,EA)).
+overrides(r34_1_b,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
+overrides(r34_1,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
 
 owner_of(X,Y) :-
     legal_owner_of(X,Y).
@@ -279,7 +264,6 @@ owner_and_not_partner_of(Y,Z) :-
 % (iv)	any practice directions, guidance notes and rulings (relating to professional practice,
 % etiquette, conduct and discipline) issued by the Council or the Society.
 
-section(r34_2_b).
 according_to(r34_2_b,may(LP,accept,EA)) :-
     legal_practitioner(LP),
     member_of(LP,Main_Practice),
@@ -290,36 +274,21 @@ according_to(r34_2_b,may(LP,accept,EA)) :-
     accepts_position_as_representative(LP,EA,Main_Practice),
     not holds(must_not(Main_Practice,participate,Other_Practice)). % this is a low-fidelity representation of the prohibition.
 
-defeated(r34_2_b,may(LP,accept,EA)) :-
-    according_to(r34_1,must_not(LP,accept,EA)),
-    not defeated(r34_1,must_not(LP,accept,EA)).
-    
-% THIS AMENDMENT ADDS:
-defeated(r34_2_b,may(LP,accept,EA)) :-
-    according_to(r34_1_b,must_not(LP,accept,EA)),
-    not defeated(r34_1_b,must_not(LP,accept,EA)).
-
+overrides(r34_1,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
+overrides(r34_1_b,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
 
 % RULE 34(3)
 % (3)  Subject to paragraph (1), a legal practitioner may accept an executive appointment 
 % in a business entity which provides law-related services.
 
-section(r34_3).
 according_to(r34_3,may(LP,accept,EA)) :-
     legal_practitioner(LP),
     executive_appointment_in_a_business_entity(EA,BE),
     provides(BE,LRS),
     law_related_service(LRS).
 
-defeated(r34_3,may(LP,accept,EA)) :-
-    according_to(r34_1,must_not(LP,accept,EA)),
-    not defeated(r34_1,must_not(LP,accept,EA)).
-
-% THIS AMENDMENT ADDS:
-defeated(r34_3,may(LP,accept,EA)) :-
-    according_to(r34_1_b,must_not(LP,accept,EA)),
-    not defeated(r34_1_b,must_not(LP,accept,EA)).
-
+overrides(r34_1,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
+overrides(r34_1_b,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
 
 % RULE 34(4)
 % (4)  Subject to paragraph (1), a legal practitioner (not being a locum solicitor) may 
@@ -327,7 +296,6 @@ defeated(r34_3,may(LP,accept,EA)) :-
 % legal services or law-related services, if all of the conditions set out in the 
 % Second Schedule are satisfied.
 
-section(r34_4).
 according_to(r34_4,may(LP,accept,EA)) :-
     legal_practitioner(LP),
     not locum_solicitor(LP),
@@ -335,14 +303,8 @@ according_to(r34_4,may(LP,accept,EA)) :-
     not provides_legal_or_law_related_services(BE),
     conditions_of_second_schedule_satisfied.
 
-defeated(r34_4,may(LP,accept,EA)) :-
-    according_to(r34_1,must_not(LP,accept,EA)),
-    not defeated(r34_1,must_not(LP,accept,EA)).
-
-% This amendment adds:
-defeated(r34_4,may(LP,accept,EA)) :-
-    according_to(r34_1_b,must_not(LP,accept,EA)),
-    not defeated(r34_1_b,must_not(LP,accept,EA)).
+overrides(r34_1,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
+overrides(r34_1_b,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
 
 % RULE 34(5)
 % (5)  Despite paragraph (1)(b), but subject to paragraph (1)(a) and (c) to (f), 
@@ -350,7 +312,6 @@ defeated(r34_4,may(LP,accept,EA)) :-
 % does not provide any legal services or law-related services, if all of the 
 % conditions set out in the Second Schedule are satisfied.
 
-section(r34_5).
 according_to(r34_5,may(LP,accept,EA)) :-
     legal_practitioner(LP),
     locum_solicitor(LP),
@@ -358,14 +319,8 @@ according_to(r34_5,may(LP,accept,EA)) :-
     not provides_legal_or_law_related_services(BE),
     conditions_of_second_schedule_satisfied.
 
-%% WITH THIS AMENDMENT, THE DEFEASIBILITY STATEMENT IS SIMPLIFIED
-defeated(r34_5,may(LP,accept,EA)) :-
-    according_to(r34_1,must_not(LP,accept,EA)),
-    not defeated(r34_1,must_not(LP,accept,EA)).
-
-defeated(r34_1_b,must_not(LP,accept,EA)) :-
-    according_to(r34_5,may(LP,accept,EA)),
-    not defeated(r34_5,may(LP,accept,EA)).
+overrides(r34_1,must_not(LP,accept,EA),r34_5,may(LP,accept,EA)).
+overrides(r34_5,may(LP,accept,EA),r34_1,must_not(LP,accept,EA)).
 
 provides_legal_or_law_related_services(BE) :-
     provides(BE,Serv),
@@ -380,7 +335,6 @@ provides_legal_or_law_related_services(BE) :-
 % (a)	a legal practitioner in a Singapore law practice must not accept any executive 
 % appointment in another Singapore law practice; and
 
-section(r34_6_a).
 according_to(r34_6_a,must_not(LP,accept,EA)) :-
     legal_practitioner(LP),
     executive_appointment_in_a_law_practice(EA,Other_Practice),
@@ -389,56 +343,33 @@ according_to(r34_6_a,must_not(LP,accept,EA)) :-
     law_practice_in_singapore(Other_Practice),
     Own_Practice \= Other_Practice.
 
-defeated(r34_6_a,must_not(LP,accept,EA)) :-
-    according_to(r34_2_a,may(LP,accept,EA)),
-    not defeated(r34_2_a,may(LP,accept,EA)).
-defeated(r34_6_a,must_not(LP,accept,EA)) :-
-    according_to(r34_2_b,may(LP,accept,EA)),
-    not defeated(r34_2_b,may(LP,accept,EA)).
-defeated(r34_6_a,must_not(LP,accept,EA)) :-
-    according_to(r34_3,may(LP,accept,EA)),
-    not defeated(r34_3,may(LP,accept,EA)).
-defeated(r34_6_a,must_not(LP,accept,EA)) :-
-    according_to(r34_4,may(LP,accept,EA)),
-    not defeated(r34_4,may(LP,accept,EA)).
-defeated(r34_6_a,must_not(LP,accept,EA)) :-
-    according_to(r34_5,may(LP,accept,EA)),
-    not defeated(r34_5,may(LP,accept,EA)).
+overrides(r34_2_a,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+overrides(r34_2_b,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+overrides(r34_3,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+overrides(r34_4,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+overrides(r34_5,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
 
 % (b)	a legal practitioner must not accept any executive appointment in a business entity.
 according_to(r34_6_b,must_not(LP,accept,EA)) :-
     legal_practitioner(LP),
     executive_appointment_in_a_business_entity(EA,BE).
   
-section(r34_6_b).
-defeated(r34_6_b,must_not(LP,accept,EA)) :-
-    according_to(r34_2_a,may(LP,accept,EA)),
-    not defeated(r34_2_a,may(LP,accept,EA)).
-defeated(r34_6_b,must_not(LP,accept,EA)) :-
-    according_to(r34_2_b,may(LP,accept,EA)),
-    not defeated(r34_2_b,may(LP,accept,EA)).
-defeated(r34_6_b,must_not(LP,accept,EA)) :-
-    according_to(r34_3,may(LP,accept,EA)),
-    not defeated(r34_3,may(LP,accept,EA)).
-defeated(r34_6_b,must_not(LP,accept,EA)) :-
-    according_to(r34_4,may(LP,accept,EA)),
-    not defeated(r34_4,may(LP,accept,EA)).
-defeated(r34_6_b,must_not(LP,accept,EA)) :-
-    according_to(r34_5,may(LP,accept,EA)),
-    not defeated(r34_5,may(LP,accept,EA)).
+overrides(r34_2_a,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+overrides(r34_2_b,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+overrides(r34_3,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+overrides(r34_4,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+overrides(r34_5,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
 
 % RULE 34(7)
 % (7)  To avoid doubt, nothing in this rule prohibits a legal practitioner 
 % from accepting any appointment in any institution set out in the Third Schedule.
 
-section(r34_7).
 according_to(r34_7,may(LP,accept,P)) :-
     legal_practitioner(LP),
     position(P),
     institution(I),
     in(P,I),
     in_third_schedule(I).
-
 
 % DEFINITIONS
 % (9)  In this rule and the First to Fourth Schedules —
@@ -465,7 +396,7 @@ business_entity(X) :- carries_on(X,Y), business(Y), business_trust(X), not law_p
 business_entity(X) :- carries_on(X,Y), business(Y), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
 
 
-% THE ABSENCE OF THIS RULE IN THE ORIGINAL IS AN ERROR.
+% TODO: THE ABSENCE OF THIS RULE IN THE ORIGINAL IS AN ERROR.
 law_practice_in_singapore(X) :-
     law_practice(X),
     jurisdiction(X,singapore).

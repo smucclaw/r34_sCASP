@@ -5,7 +5,7 @@
 %% DESCRIPTION: executive position in that other legal practice.
 
 #include 'basic_facts.pl'.
-#include '../newr34.pl'.
+#include '../newr34lpdat.pl'.
 
 law_practice(other_practice).
 partnership(other_practice).
@@ -20,6 +20,6 @@ entitles_holder(other_practice_executive).
 
 accepts_position_as_representative(jason,other_practice_executive,abc_llp).
 
-holds(must_not(abc_llp,participate,other_practice)).
+legally_holds(must_not(abc_llp,participate,other_practice)).
 
 ?-  not according_to(r34_2_b,may(jason,accept,other_practice_executive)).
