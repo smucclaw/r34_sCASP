@@ -2,8 +2,8 @@
 %% DESCRIPTION: If megaCorp carries on a business incompatible with the dignity of the profession,
 %% DESCRIPTION: jason should not be allowed to accept the CEO position at megaCorp.
 
-%#include 'basic_facts.pl'.
-%#include '../r34_amended.pl'.
+#include 'basic_facts.pl'.
+#include '../newr34.pl'.
 
 
 % Facts

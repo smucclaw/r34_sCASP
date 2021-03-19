@@ -13,7 +13,7 @@ STARTTIME=$(date +%s)
 for i in $1/test*.pl; do
     echo "TEST DESCRIPTION: $i"
     grep "DESCRIPTION" $i | sed 's/\%\% DESCRIPTION: //'
-    scasp --prev_forall -s1 $i > temp.out
+    scasp -s1 $i > temp.out
     echo
     echo "TEST RESULT:"
     grep -A 1 "QUERY:I would like to know if" temp.out
