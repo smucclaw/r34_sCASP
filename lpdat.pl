@@ -94,18 +94,20 @@ defeated_by_refutation(Rule,Conclusion,Other_Rule,Other_Conclusion) :-
     refuted_by(Rule,Conclusion,Other_Rule,Other_Conclusion).
 
 % A conclusion can be defeated three ways.
-defeated(R,C) :-
-    opposes(R,C,OR,OC),
-    defeated_by_disqualification(R,C,OR,OC).
-defeated(R,C) :-
-    opposes(R,C,OR,OC),
-    defeated_by_rebuttal(R,C,OR,OC).
+%defeated(R,C) :-
+%    opposes(R,C,OR,OC),
+%    defeated_by_disqualification(R,C,OR,OC).
+%defeated(R,C) :-
+%    opposes(R,C,OR,OC),
+%    defeated_by_rebuttal(R,C,OR,OC).
 defeated(R,C) :-
     opposes(R,C,OR,OC),
     defeated_by_refutation(R,C,OR,OC).
 
-% a conclusino holds if it is found and not defeated.
+% a conclusion holds if it is found and not defeated.
 #pred legally_holds(R,C) :: 'the conclusion @(C) from rule @(R) ultimately holds'.
 legally_holds(R,C) :-
-    according_to(R,C),
+    according_to(R,C), %this is slowing things down, because every time it asks whether or not whether or not
+                        % something holds, it needs to know all of the things that potentially hold.
+                        % I wonder if this can be sped up by just querying the ground conclusion and not-defeated.
     not defeated(R,C).

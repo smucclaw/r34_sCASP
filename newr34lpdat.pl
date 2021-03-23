@@ -143,7 +143,7 @@
 
 % Indicate to lpdat that opposition is implied by overriding, so we do not
 % have to make it explicit for each rule.
-opposes(R1,C1,R2,C2) :- overrides(R1,C1,R2,C2), according_to(R1,C1), according_to(R2,C2).
+%opposes(R1,C1,R2,C2) :- overrides(R1,C1,R2,C2), according_to(R1,C1), according_to(R2,C2).
 
 % RULE 34
 % 34. Executive appointments
@@ -240,6 +240,9 @@ according_to(r34_2_a,may(LP,accept,EA)) :-
     Main_Practice \= Other_Practice,
     not owner_and_not_partner_of(Other_Practice,Main_Practice).
 
+opposes(r34_1_b,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
+opposes(r34_1,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
+
 overrides(r34_1_b,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
 overrides(r34_1,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
 
@@ -280,6 +283,9 @@ according_to(r34_2_b,may(LP,accept,EA)) :-
     accepts_position_as_representative(LP,EA,Main_Practice),
     not participation_prohibited(Main_Practice,Other_Practice). % this is a low-fidelity representation of the prohibition.
 
+opposes(r34_1,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
+opposes(r34_1_b,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
+
 overrides(r34_1,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
 overrides(r34_1_b,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
 
@@ -292,6 +298,9 @@ according_to(r34_3,may(LP,accept,EA)) :-
     executive_appointment_in_a_business_entity(EA,BE),
     provides(BE,LRS),
     law_related_service(LRS).
+
+opposes(r34_1,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
+opposes(r34_1_b,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
 
 overrides(r34_1,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
 overrides(r34_1_b,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
@@ -309,6 +318,9 @@ according_to(r34_4,may(LP,accept,EA)) :-
     not provides_legal_or_law_related_services(BE),
     conditions_of_second_schedule_satisfied.
 
+opposes(r34_1,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
+opposes(r34_1_b,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
+
 overrides(r34_1,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
 overrides(r34_1_b,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
 
@@ -324,6 +336,9 @@ according_to(r34_5,may(LP,accept,EA)) :-
     executive_appointment_in_a_business_entity(EA,BE),
     not provides_legal_or_law_related_services(BE),
     conditions_of_second_schedule_satisfied.
+
+opposes(r34_1,must_not(LP,accept,EA),r34_5,may(LP,accept,EA)).
+opposes(r34_5,may(LP,accept,EA),r34_1_b,must_not(LP,accept,EA)).
 
 overrides(r34_1,must_not(LP,accept,EA),r34_5,may(LP,accept,EA)).
 overrides(r34_5,may(LP,accept,EA),r34_1_b,must_not(LP,accept,EA)).
@@ -349,6 +364,12 @@ according_to(r34_6_a,must_not(LP,accept,EA)) :-
     law_practice_in_singapore(Other_Practice),
     Own_Practice \= Other_Practice.
 
+opposes(r34_2_a,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+opposes(r34_2_b,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+opposes(r34_3,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+opposes(r34_4,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+opposes(r34_5,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+
 overrides(r34_2_a,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
 overrides(r34_2_b,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
 overrides(r34_3,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
@@ -359,7 +380,14 @@ overrides(r34_5,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
 according_to(r34_6_b,must_not(LP,accept,EA)) :-
     legal_practitioner(LP),
     executive_appointment_in_a_business_entity(EA,BE).
-  
+
+opposes(r34_2_a,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+opposes(r34_2_b,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+opposes(r34_3,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+opposes(r34_4,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+opposes(r34_5,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+
+
 overrides(r34_2_a,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
 overrides(r34_2_b,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
 overrides(r34_3,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
