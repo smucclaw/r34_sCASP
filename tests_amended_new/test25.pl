@@ -11,9 +11,7 @@ conditions_of_second_schedule_satisfied.
 incompatible_dignity_of_legal_profession(widget_sales).
 
 
-?- legally_holds(r34_1,must_not(jason,accept,ceo_megaCorp)),
+?- legally_holds(R,C), R = r34_1, C= must_not(jason,accept,ceo_megaCorp),
    according_to(r34_1_b,must_not(jason,accept,ceo_megaCorp)),
    according_to(r34_1,must_not(jason,accept,ceo_megaCorp)),
    according_to(r34_5,may(jason,accept,ceo_megaCorp)).
-
-% Takes forever to run.
