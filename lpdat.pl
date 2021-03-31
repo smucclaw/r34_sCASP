@@ -98,20 +98,24 @@ defeated_by_refutation(Rule,Conclusion,Other_Rule,Other_Conclusion) :-
     refuted_by(Rule,Conclusion,Other_Rule,Other_Conclusion).
 
 % A conclusion can be defeated three ways.
-%defeated(R,C) :-
-%    rule(R),
-%    rule(OR),
-%    conclusion(C),
-%    conclusion(OC),
-%    opposes(R,C,OR,OC),
-%    defeated_by_disqualification(R,C,OR,OC).
-%defeated(R,C) :-
-%    rule(R),
-%    rule(OR),
-%    conclusion(C),
-%    conclusion(OC),
-%    opposes(R,C,OR,OC),
-%    defeated_by_rebuttal(R,C,OR,OC).
+defeated(R,C) :-
+    rule(R),
+    rule(OR),
+    R \= OR,
+    conclusion(C),
+    conclusion(OC),
+    C \= OC,
+    opposes(R,C,OR,OC),
+    defeated_by_disqualification(R,C,OR,OC).
+defeated(R,C) :-
+    rule(R),
+    rule(OR),
+    R \= OR,
+    conclusion(C),
+    conclusion(OC),
+    C \= OC,
+    opposes(R,C,OR,OC),
+    defeated_by_rebuttal(R,C,OR,OC).
 defeated(R,C) :-
     rule(R),
     rule(OR),

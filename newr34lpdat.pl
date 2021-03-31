@@ -143,10 +143,6 @@ conclusion(must_not(A,accept,B)).
 %#abducible unauthorized(X).
 %#abducible unfair(X).
 
-% Indicate to lpdat that opposition is implied by overriding, so we do not
-% have to make it explicit for each rule.
-%opposes(R1,C1,R2,C2) :- overrides(R1,C1,R2,C2), according_to(R1,C1), according_to(R2,C2).
-
 % RULE 34
 % 34. Executive appointments
 
@@ -490,10 +486,6 @@ executive_appointment(X) :- executive_appointment_in_a_law_practice(X,Y).
 executive_appointment_associated_with_a_business(X,Y) :- position(X), entitles_holder(X), associated_with(X,Y), business(Y), not non_executive_director(X), not independent_director(X).
 executive_appointment_in_a_business_entity(X,Y) :- position(X), entitles_holder(X), in(X,Y), business_entity(Y), not non_executive_director(X), not independent_director(X).
 executive_appointment_in_a_law_practice(X,Y) :- position(X), entitles_holder(X), in(X,Y), law_practice(Y), jurisdiction(Y,singapore), not non_executive_director(X), not independent_director(X).
-
-
-%law_practice(mine).
-%law_practice(other).
 
 
 %% TEST QUERIES

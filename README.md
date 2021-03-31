@@ -10,6 +10,9 @@ In order to run this software you need to install the ciao programming langauge,
 
 Instructions are available [here](https://gitlab.software.imdea.org/ciao-lang/sCASP).
 
+Note that the original published version of the code was designed for an earlier version of s(CASP).
+You may need to use th `--prev_forall` flag to make older encodings run properly.
+
 # Testing
 
 Once installed, you can run two different sets of tests against the original and amended law.
