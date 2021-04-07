@@ -29,15 +29,15 @@ rebutted_by(Rule,Conclusion,Other_Rule,Other_Conclusion) :-
 % A rule is refuted if there is another rule that conflicts with it and overrides it.
 #pred refuted_by(R1,C1,R2,C2) :: 'the conclusion @(C1) from rule @(R1) is refuted by the conclusion @(C2) from rule @(R2)'.
 refuted_by(Rule,Conclusion,Other_Rule,Other_Conclusion) :-
-    rule(Rule),
-    rule(Other_Rule),
-    Rule \= Other_Rule,
-    conclusion(Conclusion),
-    conclusion(Other_Conclusion),
-    Conclusion \= Other_Conclusion,
+    %rule(Rule),
+    %rule(Other_Rule),
+    %conclusion(Conclusion),
+    %conclusion(Other_Conclusion),
     opposes(Rule,Conclusion,Other_Rule,Other_Conclusion),
     overrides(Other_Rule,Other_Conclusion,Rule,Conclusion),
     according_to(Rule,Conclusion),
+    %Rule \= Other_Rule,
+    %Conclusion \= Other_Conclusion,
     according_to(Other_Rule,Other_Conclusion).
 
 % A rule is compromised if it is either refuted or defeated.
@@ -98,39 +98,39 @@ defeated_by_refutation(Rule,Conclusion,Other_Rule,Other_Conclusion) :-
     refuted_by(Rule,Conclusion,Other_Rule,Other_Conclusion).
 
 % A conclusion can be defeated three ways.
+%defeated(R,C) :-
+%    rule(R),
+%    rule(OR),
+%    R \= OR,
+%    conclusion(C),
+%    conclusion(OC),
+%    C \= OC,
+%    opposes(R,C,OR,OC),
+%    defeated_by_disqualification(R,C,OR,OC).
+%defeated(R,C) :-
+%    rule(R),
+%    rule(OR),
+%    R \= OR,
+%    conclusion(C),
+%    conclusion(OC),
+%    C \= OC,
+%    opposes(R,C,OR,OC),
+%    defeated_by_rebuttal(R,C,OR,OC).
 defeated(R,C) :-
-    rule(R),
-    rule(OR),
-    R \= OR,
-    conclusion(C),
-    conclusion(OC),
-    C \= OC,
-    opposes(R,C,OR,OC),
-    defeated_by_disqualification(R,C,OR,OC).
-defeated(R,C) :-
-    rule(R),
-    rule(OR),
-    R \= OR,
-    conclusion(C),
-    conclusion(OC),
-    C \= OC,
-    opposes(R,C,OR,OC),
-    defeated_by_rebuttal(R,C,OR,OC).
-defeated(R,C) :-
-    rule(R),
-    rule(OR),
-    R \= OR,
-    conclusion(C),
-    conclusion(OC),
-    C \= OC,
-    opposes(R,C,OR,OC),
+    %rule(R),
+    %rule(OR),
+    %R \= OR,
+    %conclusion(C),
+    %conclusion(OC),
+    %C \= OC,
+    %opposes(R,C,OR,OC),
     defeated_by_refutation(R,C,OR,OC).
 
 % a conclusion holds if it is found and not defeated.
 #pred legally_holds(R,C) :: 'the conclusion @(C) from rule @(R) ultimately holds'.
 legally_holds(R,C) :-
-    rule(R),
-    conclusion(C),      % inexplicably, changing the order of the clauses in this rules solved an infinite loop?
+    %rule(R),
+    %conclusion(C),      % inexplicably, changing the order of the clauses in this rules solved an infinite loop?
     not defeated(R,C),
     according_to(R,C). %this is slowing things down, because every time it asks whether or not whether or not
                         % something holds, it needs to know all of the things that potentially hold.
@@ -153,16 +153,53 @@ legally_holds(R,C) :-
 %#abducible rule(X).
 %#abducible conclusion(C).
 %#abducible according_to(R,C).
-%#abducible overrides(R1,C1,R2,C2).
-%#abducible opposes(R1,C1,R2,C2).
+#abducible overrides(R1,C1,R2,C2).
+#abducible opposes(R1,C1,R2,C2).
+
+
+% s(CASP) is not good at testing against things that there needs to be more
+% than one of for it to work. So I'm going to create a handful of rules and
+% conclusions, and hopeuflly that will make some of the tests work better.
+
+#abducible rule(rule1).
+#abducible rule(rule2).
+#abducible rule(rule3).
+#abducible rule(rule4).
+#abducible conclusion(conclusion1).
+#abducible conclusion(conclusion2).
+#abducible conclusion(conclusion3).
+#abducible conclusion(conclusion4).
+#abducible according_to(rule1,conclusion1).
+#abducible according_to(rule2,conclusion2).
+#abducible according_to(rule3,conclusion3).
+#abducible according_to(rule4,conclusion4).
 
 %?- legally_holds(R,C).
-%?- defeated(Rule,Conclusion).
+% 4 models with 4 rules
+
+%?- not defeated(Rule,Conclusion).
+% 46 Models with 4 rules.
+
 %?- defeated_by_disqualification(R1,C1,R2,C2).
+% >100 models with 4 rules.
+
 %?- defeated_by_rebuttal(R,C,OR,OC).
+% NO models with 4 rules.
+
 %?- defeated_by_refutation(R,C,OR,OC).
+% 24 models with 4 rules. (4!)
+
 %?- disqualified(Rule,Conclusion).
+% > 100 models with 4 rules.
+
 %?- defeated_by_closure(R1,C1,R2,C2).
+% > 100 models with 4 rules.
+
 %?- compromised(Rule,Conclusion).
-%?- refuted_by(R1,C1,R2,C2).
+% 24 models with 4 rules. (4!)
+
+?- refuted_by(R1,C1,R2,C2).
+% 24 models with 4 rules. (4!)
+
 %?- rebutted_by(R1,C1,R2,C2).
+% 24 models with 4 rules (4!) (way faster)

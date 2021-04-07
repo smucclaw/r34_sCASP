@@ -1,9 +1,9 @@
-#include 'lpdat.pl'.
+#include 'lpdat_simplified.pl'.
 #pred legally_holds(Rule,may(Y,accept,Z)) :: 'it holds in accordance with @(Rule) that @(Y) is permitted to accept @(Z)'.
 #pred legally_holds(Rule,must_not(Y,accept,Z)) :: 'it holds in accordance with @(Rule) that @(Y) is prohibited from accepting @(Z)'.
 
-conclusion(may(A,accept,B)).
-conclusion(must_not(A,accept,B)).
+%conclusion(may(A,accept,B)).
+%conclusion(must_not(A,accept,B)).
 
 % PREDICATE DEFINITIONS
 #pred accepts_position_as_representative(A,B,C) :: '@(A) accepts the position @(B) as a representative of @(C)'.
@@ -85,64 +85,62 @@ conclusion(must_not(A,accept,B)).
 
 
 % ABDUCIBILITY STATEMENTS
-#abducible accepts_position_as_representative(A,B,C).
-#abducible as_compensation_for(A,B).
-#abducible associated_with(A,B).
-#abducible beneficial_owner_of(X,Y).
-#abducible business_trust(X).
-#abducible calling(X).
-#abducible carries_on(X,Y).
-#abducible company(X).
-#abducible conditions_of_second_schedule_satisfied.
-#abducible corporation(X).
-#abducible derogates_from_dignity_of_legal_profession(X).
-#abducible described_in_first_schedule(X).
-#abducible detracts_from_dignity_of_legal_profession(X).
-#abducible director_of(X,Y).
-#abducible entitles_holder(X).
-#abducible for_profit(X).
-#abducible foreign_law_practice(X).
-#abducible formal_law_alliance(X).
-#abducible in_fourth_schedule(X).
-#abducible in_third_schedule(X).
-#abducible in(X,Y).
-#abducible incompatible_dignity_of_legal_profession(X).
-#abducible independent_director(X).
-#abducible institution(X).
-#abducible involves_paying_commission(X,Y,Z).
-#abducible involves_sharing_fees(X,Y,Z).
-#abducible joint_law_venture(X).
-#abducible jurisdiction(X,Y).
-#abducible law_practice_in_singapore(X).
+%#abducible accepts_position_as_representative(A,B,C).
+%#abducible as_compensation_for(A,B).
+%#abducible associated_with(A,B).
+%#abducible beneficial_owner_of(X,Y).
+%#abducible business_trust(X).
+%#abducible calling(X).
+%#abducible carries_on(X,Y).
+%#abducible company(X).
+%#abducible conditions_of_second_schedule_satisfied.
+%#abducible corporation(X).
+%#abducible derogates_from_dignity_of_legal_profession(X).
+%#abducible described_in_first_schedule(X).
+%#abducible detracts_from_dignity_of_legal_profession(X).
+%#abducible director_of(X,Y).
+%#abducible entitles_holder(X).
+%#abducible for_profit(X).
+%#abducible foreign_law_practice(X).
+%#abducible formal_law_alliance(X).
+%#abducible in_fourth_schedule(X).
+%#abducible in_third_schedule(X).
+%#abducible in(X,Y).
+%#abducible incompatible_dignity_of_legal_profession(X).
+%#abducible independent_director(X).
+%#abducible institution(X).
+%#abducible involves_paying_commission(X,Y,Z).
+%#abducible involves_sharing_fees(X,Y,Z).
+%#abducible joint_law_venture(X).
+%#abducible jurisdiction(X,Y).
 %#abducible law_practice(X).
-#abducible law_related_service(X).
-#abducible legal_owner_of(X,Y).
-#abducible legal_practitioner(X).
-#abducible legal_service(X).
-#abducible legal_work(X).
-#abducible llp(X).
-#abducible locum_solicitor(X).
-#abducible materially_interferes_with(X,Y,Z).
-#abducible member_of(X,Y).
-#abducible non_executive_director(X).
-#abducible owner_and_not_partner_of(Y,Z).
-#abducible owner_of(X,Y).
-#abducible participation_prohibited(X,Y).
-#abducible partner_of(X,Y).
-#abducible partner_sp_or_director_of(X,Y).
-#abducible partnership(X).
-#abducible performed_by(A,B).
-#abducible position(X).
-#abducible primary_occupation_of(X,Y).
-#abducible prohibited_business(X).
-#abducible provides(A,B).
-#abducible service(X).
-#abducible sole_proprietor_of(X,Y).
-#abducible soleprop(X).
-#abducible third_schedule_institution(X).
-#abducible trade(X).
-#abducible unauthorized(X).
-#abducible unfair(X).
+%#abducible law_related_service(X).
+%#abducible legal_owner_of(X,Y).
+%#abducible legal_practitioner(X).
+%#abducible legal_service(X).
+%#abducible legal_work(X).
+%#abducible llp(X).
+%#abducible locum_solicitor(X).
+%#abducible materially_interferes_with(X,Y,Z).
+%#abducible member_of(X,Y).
+%#abducible non_executive_director(X).
+%#abducible owner_of(X,Y).
+%#abducible participation_prohibited(X,Y).
+%#abducible partner_of(X,Y).
+%#abducible partner_sp_or_director_of(X,Y).
+%#abducible partnership(X).
+%#abducible performed_by(A,B).
+%#abducible position(X).
+%#abducible primary_occupation_of(X,Y).
+%#abducible prohibited_business(X).
+%#abducible provides(A,B).
+%#abducible service(X).
+%#abducible sole_proprietor_of(X,Y).
+%#abducible soleprop(X).
+%#abducible third_schedule_institution(X).
+%#abducible trade(X).
+%#abducible unauthorized(X).
+%#abducible unfair(X).
 
 % RULE 34
 % 34. Executive appointments
@@ -151,30 +149,36 @@ conclusion(must_not(A,accept,B)).
 % 34.—(1)  A legal practitioner must not accept any executive appointment associated with 
 % any of the following businesses:
 
-rule(r34_1).
+%rule(r34_1).
 
 according_to(r34_1,must_not(Actor, accept, Appointment)) :-
     legal_practitioner(Actor),
-    executive_appointment(Appointment),
     associated_with(Appointment,Business),
     business(Business),
-    according_to(Rule,described_in_s1(Business)).
+    according_to(Rule,described_in_s1(Business)),
+    executive_appointment(Appointment). % moving executive appointment to the bottom of the list of clauses made the code run.
 
 % (a)	any business which detracts from, is incompatible with, or derogates from the dignity of,
 % the legal profession;
 
-rule(r34_1_a).
+%rule(r34_1_a).
 
 
-according_to(r34_1_a,described_in_s1(Business)) :- business(Business), detracts_from_dignity_of_legal_profession(Business).
-according_to(r34_1_a,described_in_s1(Business)) :- business(Business), incompatible_dignity_of_legal_profession(Business).
-according_to(r34_1_a,described_in_s1(Business)) :- business(Business), derogates_from_dignity_of_legal_profession(Business).
+according_to(r34_1_a,described_in_s1(Business)) :-
+    detracts_from_dignity_of_legal_profession(Business),
+    business(Business).
+according_to(r34_1_a,described_in_s1(Business)) :-
+    incompatible_dignity_of_legal_profession(Business),
+    business(Business).
+according_to(r34_1_a,described_in_s1(Business)) :- 
+    derogates_from_dignity_of_legal_profession(Business),
+    business(Business).
 
 % (b) Repealed in amendment.
 
 % (c)	any business which is likely to unfairly attract business in the practice of law;
 
-rule(r34_1_c).
+%rule(r34_1_c).
 
 
 according_to(r34_1_c,described_in_s1(X)) :- unfair(X).
@@ -183,7 +187,7 @@ according_to(r34_1_c,described_in_s1(X)) :- unfair(X).
 % or the payment of a commission to, any unauthorised person for legal work performed 
 % by the legal practitioner;
 
-rule(r34_1_d).
+%rule(r34_1_d).
 
 
 according_to(r34_1_d,described_in_s1(X)) :- involves_sharing_fees(X,Fees,Recipient), as_compensation_for(Fees,Work), performed_by(Work,Lawyer), legal_work(Work), unauthorized(Recipient).
@@ -192,7 +196,7 @@ according_to(r34_1_d,described_in_s1(X)) :- involves_paying_commission(X,Fees,Re
 
 % (e)	any business set out in the First Schedule;
 
-rule(r34_1_e).
+%rule(r34_1_e).
 
 according_to(r34_1_e,described_in_s1(X)) :- described_in_first_schedule(X).
 
@@ -203,7 +207,7 @@ according_to(r34_1_e,described_in_s1(X)) :- described_in_first_schedule(X).
 % (iv)	any practice directions, guidance notes and rulings (relating to professional practice,
 %  etiquette, conduct and discipline) issued by the Council or the Society.
 
-rule(r34_1_f).
+%rule(r34_1_f).
 
 
 according_to(r34_1_f,described_in_s1(X)) :- prohibited_business(X).
@@ -220,7 +224,7 @@ according_to(r34_1_f,described_in_s1(X)) :- prohibited_business(X).
 %% the section is left as r34_1_b solely so that we do not need to rewrite the tests in order
 %% for them to work.
 
-rule(r34_1_b).
+%rule(r34_1_b).
 
 
 according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
@@ -231,7 +235,7 @@ according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
 
     % TODO: These were wrong in the origintal Actor/Lawyer.
 
-rule(r34_1_b).
+%rule(r34_1_b).
 
 
 according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
@@ -252,7 +256,7 @@ according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
 % (a)	every legal or beneficial owner of the related practice is the sole proprietor, 
 % or a partner or director, of the main practice;
 
-rule(r34_2_a).
+%rule(r34_2_a).
 
 
 according_to(r34_2_a,may(LP,accept,EA)) :-
@@ -297,7 +301,7 @@ owner_and_not_partner_of(Y,Z) :-
 % (iv)	any practice directions, guidance notes and rulings (relating to professional practice,
 % etiquette, conduct and discipline) issued by the Council or the Society.
 
-rule(r34_2_b).
+%rule(r34_2_b).
 
 according_to(r34_2_b,may(LP,accept,EA)) :-
     legal_practitioner(LP),
@@ -319,7 +323,7 @@ overrides(r34_1_b,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
 % (3)  Subject to paragraph (1), a legal practitioner may accept an executive appointment 
 % in a business entity which provides law-related services.
 
-rule(r34_3).
+%rule(r34_3).
 
 according_to(r34_3,may(LP,accept,EA)) :-
     legal_practitioner(LP),
@@ -339,7 +343,7 @@ overrides(r34_1_b,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
 % legal services or law-related services, if all of the conditions set out in the 
 % Second Schedule are satisfied.
 
-rule(r34_4).
+%rule(r34_4).
 
 according_to(r34_4,may(LP,accept,EA)) :-
     legal_practitioner(LP),
@@ -360,7 +364,7 @@ overrides(r34_1_b,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
 % does not provide any legal services or law-related services, if all of the 
 % conditions set out in the Second Schedule are satisfied.
 
-rule(r34_5).
+%rule(r34_5).
 
 according_to(r34_5,may(LP,accept,EA)) :-
     legal_practitioner(LP),
@@ -388,7 +392,7 @@ provides_legal_or_law_related_services(BE) :-
 % (a)	a legal practitioner in a Singapore law practice must not accept any executive 
 % appointment in another Singapore law practice; and
 
-rule(r34_6_a).
+%rule(r34_6_a).
 
 according_to(r34_6_a,must_not(LP,accept,EA)) :-
     legal_practitioner(LP),
@@ -412,7 +416,7 @@ overrides(r34_5,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
 
 % (b)	a legal practitioner must not accept any executive appointment in a business entity.
 
-rule(r34_6_b).
+%rule(r34_6_b).
 
 according_to(r34_6_b,must_not(LP,accept,EA)) :-
     legal_practitioner(LP),
@@ -435,7 +439,7 @@ overrides(r34_5,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
 % (7)  To avoid doubt, nothing in this rule prohibits a legal practitioner 
 % from accepting any appointment in any institution set out in the Third Schedule.
 
-rule(r34_7).
+%rule(r34_7).
 
 according_to(r34_7,may(LP,accept,P)) :-
     legal_practitioner(LP),
@@ -493,91 +497,91 @@ executive_appointment_in_a_law_practice(X,Y) :- position(X), entitles_holder(X),
 %?- business(X).                                            
 % Working, 2 models, trade/calling
 
+%?- law_practice_in_singapore(X).
+% Working, 1 model.
 
 %?- business_entity(X).                                     
-% Not Working, 28 models, expecting 14 models (7 types * 2 business)
-
+% Working, 28 models, 7 categories * 2 business * 2 not legal pracitce in singapore (not lp, not sg)
 
 %?- executive_appointment(X).                               
-% Not Working, 31 models, expecting 17 models (1 law practice, + 2 business + 14 business entity)
-
+% Working, 31 models, expecting 17 models (1 law practice, + 2 business + 28 business entity)
 
 %?- according_to(r34_7,may(A,accept,B)).                    
 % Working, 1 model
 
-
 %?- according_to(r34_6_b,must_not(LP,accept,EA)).           
-% Not Working, 28 models, expecting 14 models.
-
-%law_practice(this).
-%?- according_to(r34_6_a,must_not(LP,accept,EA)).           
-% Dont know if it is working. Returns 8 models if you define one law_practice(this).
-% Returns none if you do not.
-% Returns 2 models (should be 1?), IF you define one law_practice(this) 
-% and law_practice(X) is NOT abducible.
-
+% Working, 28 models.
 
 %?- provides_legal_or_law_related_services(BE).              
 % Working, 2 models.
 
 %?- according_to(r34_5,may(LP,accept,EA)).                   
-% Not Working, 28 models, expecting 14
+% Working, 28 models.
 
-%?- executive_appointment_associated_with_a_business(X).     
-% Not Working
+%?- executive_appointment_associated_with_a_business(X,Y).     
+% Working, 2 models (business)
 
+%?- executive_appointment_in_a_business_entity(X,Y).           
+% Working, 28 models
 
-%?- executive_appointment_in_a_business_entity(X).           
-% Not Working
-
-
-%?- executive_appointment_in_a_law_practice(X).              
-% Not Working
-
+%?- executive_appointment_in_a_law_practice(X,Y).              
+% Working, 1 model.
 
 %?- according_to(r34_4,may(LP,accept,EA)).                   
-% Not Working, 28 models, expecting 14
-
+% Working, 28 models
 
 %?- according_to(r34_3,may(LP,accept,EA)).                   
-% Not Working, 28 models, expecting 14
-
-%law_practice(this).
-%?- according_to(r34_2_b,may(LP,accept,EA)).
-% Not working. Zero models with just abducibility.
-% Infinite models if there is one law firm specified.
-% Infinite models if there is one law firm specified, and law_practice is not abducible.
-
-%law_practice(this).
-%?- according_to(r34_2_a,may(LP,accept,EA)).                 
-% Not working, zero models with just abducibility.
-% 16 models if you define one law_practice.
-% 4 models if you define one law_practice and it is not abducible.
-
-
-%?- according_to(r34_1_b,must_not(Actor, accept, Appointment)). 
-% DEADLY SLOW. 5 seconds per model.
-% Working? 48 models. (was expecting around 50)
+% Working, 28 models
 
 %?- according_to(r34_1_f,described_in_s1(X)).        
 % Working, 1 model.
 
-
 %?- according_to(r34_1_e,described_in_s1(X)).       
 % Working, 1 model.
-
 
 %?- according_to(r34_1_d,described_in_s1(X)).       
 % Working, 2 models.
 
-
 %?- according_to(r34_1_c,described_in_s1(X)).       
 % Working, 1 model.
 
+%?- according_to(r34_1_b,must_not(Actor, accept, Appointment)). 
+% DEADLY SLOW. ~5 seconds per model.
+% Working, 93 models (31 executive appointments * 3 interferences)
 
-%?- according_to(r34_1_a,described_in_s1(Business)).    
-% Not working, infinite models, expecting 6
+%law_practice(this).
+%law_practice(that).
+%?- according_to(r34_2_b,may(LP,accept,EA)).
+% Not working. Zero models with just abducibility.
+% Infinite models if there is one law firm specified.
+% 2 models if two law practices specified and abducibility turned off, which is expected.
+% 3 models if using --prev_forall and one firm specified. Expecting 2.
+% Infinite models if there is one law firm specified, and law_practice is not abducible.
 
+%law_practice(this).
+%law_practice(that).
+%?- according_to(r34_2_a,may(LP,accept,EA)).                 
+% Not working with just abducibility.
+% 2 models if you define two law practices and remove abducibility, which is expected.
 
-?- according_to(r34_1,must_not(Actor, accept, Appointment)).       
+%law_practice(this).
+%law_practice(that).
+%?- according_to(r34_6_a,must_not(LP,accept,EA)).           
+% Dont know if it is working. Returns 8 models if you define one law_practice(this).
+% Returns none if you do not.
+% Returns 2 models (should be 1?), IF you define one law_practice(this) 
+% and law_practice(X) is NOT abducible.
+% 2 models if you define two law practices and remove abducibility, which is expected.
+
+%?- according_to(r34_1_a,described_in_s1(Business)).
+% Working, 6 models, but I needed to change the order of the clauses in the conditions of the rules.
+
+%?- according_to(r34_1,must_not(Actor, accept, Appointment)).       
 % Not working, infinite models.
+% Expecting 682 31 EA * 2 Bus, * (6+1+1+2+1)
+% with --prev_forall I get exactly 682 models.
+% If I change the order of the predicates I can get it to work, but it is DEADLY slow, 
+% and it generates more than the correct number of models.
+
+%?- according_to(Rule, described_in_s1(Business)).
+% Working, 11 models.
