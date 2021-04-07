@@ -555,10 +555,9 @@ executive_appointment_in_a_law_practice(X,Y) :- position(X), entitles_holder(X),
 % 4 models if you define one law_practice and it is not abducible.
 
 
-?- according_to(r34_1_b,must_not(Actor, accept, Appointment)). 
+%?- according_to(r34_1_b,must_not(Actor, accept, Appointment)). 
 % DEADLY SLOW. 5 seconds per model.
-% Working, 93 models (expecting 51?)
-
+% Working? 48 models. (was expecting around 50)
 
 %?- according_to(r34_1_f,described_in_s1(X)).        
 % Working, 1 model.
@@ -580,6 +579,5 @@ executive_appointment_in_a_law_practice(X,Y) :- position(X), entitles_holder(X),
 % Not working, infinite models, expecting 6
 
 
-%?- according_to(r34_1,must_not(Actor, accept, Appointment)).       
+?- according_to(r34_1,must_not(Actor, accept, Appointment)).       
 % Not working, infinite models.
-
