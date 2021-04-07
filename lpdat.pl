@@ -4,11 +4,11 @@
 % they can also be customized to be displayed in a more friendly way, as can the
 % other predicates. For example, to improve the display you can encode
 % #pred according_to(R,flies(X)) :: 'according to rule @(R), @(X) flies'.
-
+#pred rule(R) :: '@(R) is a rule'.
+#pred conclusion(C) :: '@(C) is a conclusion'.
 #pred according_to(R,C) :: 'according to rule @(R), the conclusion @(C) holds'.
 #pred overrides(R1,C1,R2,C2) :: 'the conclusion @(C1) from rule @(R1) overrides the conclusion @(C2) from rule @(R2)'.
 #pred opposes(R1,C1,R2,C2) :: 'the conclusion @(C1) from rule @(R1) conflicts with the conclusion @(C2) from rule @(R2)'.
-#pred opposes2(R1,C1,R2,C2) :: 'the conclusion @(C1) from rule @(R1) conflicts with the conclusion @(C2) from rule @(R2)'.
 
 % Oppositions must be stated explicitly, and must be ground at evaluation time.
 opposes(R1,C1,R2,C2) :- opposes(R2,C2,R1,C1).
@@ -135,3 +135,34 @@ legally_holds(R,C) :-
     according_to(R,C). %this is slowing things down, because every time it asks whether or not whether or not
                         % something holds, it needs to know all of the things that potentially hold.
                         % I wonder if this can be sped up by just querying the ground conclusion and not-defeated.
+
+
+% Abducibility Statements for Testing
+%#abducible legally_holds(R,C).
+%#abducible defeated(Rule,Conclusion).
+%#abducible defeated_by_disqualification(R1,C1,R2,C2).
+%#abducible defeated_by_rebuttal(R,C,OR,OC).
+%#abducible defeated_by_refutation(R,C,OR,OC).
+%#abducible disqualified(Rule,Conclusion).
+%#abducible defeated_by_closure(R1,C1,R2,C2).
+%#abducible compromised(Rule,Conclusion).
+%#abducible refuted_by(R1,C1,R2,C2).
+%#abducible rebutted_by(R1,C1,R2,C2).
+
+% You should only need the following for testing purposes
+%#abducible rule(X).
+%#abducible conclusion(C).
+%#abducible according_to(R,C).
+%#abducible overrides(R1,C1,R2,C2).
+%#abducible opposes(R1,C1,R2,C2).
+
+%?- legally_holds(R,C).
+%?- defeated(Rule,Conclusion).
+%?- defeated_by_disqualification(R1,C1,R2,C2).
+%?- defeated_by_rebuttal(R,C,OR,OC).
+%?- defeated_by_refutation(R,C,OR,OC).
+%?- disqualified(Rule,Conclusion).
+%?- defeated_by_closure(R1,C1,R2,C2).
+%?- compromised(Rule,Conclusion).
+%?- refuted_by(R1,C1,R2,C2).
+%?- rebutted_by(R1,C1,R2,C2).
