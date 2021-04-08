@@ -155,8 +155,6 @@ according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
     materially_interferes_with(Appointment,practicing_as_a_lawyer,Actor),
     primary_occupation_of(Actor,practicing_as_a_lawyer).
 
-    % TODO: These were wrong in the origintal Actor/Lawyer.
-
 according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
     legal_practitioner(Actor),
     executive_appointment(Appointment),
@@ -373,7 +371,6 @@ business_entity(X) :- carries_on(X,Y), business(Y), soleprop(X), not law_practic
 business_entity(X) :- carries_on(X,Y), business(Y), business_trust(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
 business_entity(X) :- carries_on(X,Y), business(Y), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
 
-% TODO: THE ABSENCE OF THIS RULE IN THE ORIGINAL IS AN ERROR.
 law_practice_in_singapore(X) :-
     law_practice(X),
     jurisdiction(X,singapore).
