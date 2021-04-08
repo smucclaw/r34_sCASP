@@ -198,7 +198,7 @@ legally_holds(R,C) :-
 %?- compromised(Rule,Conclusion).
 % 24 models with 4 rules. (4!)
 
-?- refuted_by(R1,C1,R2,C2).
+%?- refuted_by(R1,C1,R2,C2).
 % 24 models with 4 rules. (4!)
 
 %?- rebutted_by(R1,C1,R2,C2).

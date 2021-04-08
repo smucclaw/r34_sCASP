@@ -12,5 +12,6 @@ entitles_holder(blah_ceo).
 in(blah_ceo,blah_corp).
 carries_on(blah_corp,search_services).
 business(search_services).
+law_related_service(corporate_registry_search).
 
 ?-  according_to(r34_3,may(jason,accept,blah_ceo)).

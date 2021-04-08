@@ -13,4 +13,4 @@ materially_interferes_with(ceo_megaCorp,practicing_as_a_lawyer,jason).
 % Jason's primary occupation is practicing_as_a_lawyer.
 primary_occupation_of(jason,practicing_as_a_lawyer).
 
-?- according_to(r34_1,must_not(jason,accept,ceo_megaCorp)).
+?- according_to(r34_1_b,must_not(jason,accept,ceo_megaCorp)).

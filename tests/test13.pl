@@ -27,4 +27,6 @@ derogates_from_dignity_of_legal_profession(predatory_lending).
 
 ?- according_to(r34_1,must_not(jason,accept,other_practice_executive)),
    according_to(r34_2_b,may(jason,accept,other_practice_executive)),
-   holds(must_not(jason,accept,other_practice_executive)).
+   legally_holds(R,C),
+   R = r34_1,
+   C = must_not(jason,accept,other_practice_executive).
