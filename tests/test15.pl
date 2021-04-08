@@ -3,7 +3,7 @@
 %% DESCRIPTION: second schedule are met, if none of the requirements of section 1 are violated.
 
 #include 'basic_facts.pl'.
-#include '../r34.pl'.
+
 
 conditions_of_second_schedule_satisfied.
 

@@ -2,7 +2,7 @@
 legal_practitioner(jason).
 law_practice(abc_llp).
 jurisdiction(abc_llp,singapore).
-in(jason,abc_llp).
+member_of(jason,abc_llp).
 
 % megaCorp is a corporation with a position ceo, which entitles the holder to make executive decisions
 corporation(megaCorp).

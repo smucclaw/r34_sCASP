@@ -2,7 +2,7 @@
 %% DESCRIPTION: provide law-related services even if the conditions of the schedule are met.
 
 #include 'basic_facts.pl'.
-#include '../r34.pl'.
+
 
 conditions_of_second_schedule_satisfied.
 locum_solicitor(jason).
