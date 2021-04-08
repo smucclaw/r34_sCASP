@@ -2,7 +2,7 @@
 %% DESCRIPTION: Is listed in the first schedule.
 
 #include 'basic_facts.pl'.
-#include '../newr34_amended.pl'.
+#include '../newr34.pl'.
 
 described_in_first_schedule(widget_sales).
 

@@ -1,9 +1,6 @@
-#include 'lpdat_simplified.pl'.
+#include 'lpdat.pl'.
 #pred legally_holds(Rule,may(Y,accept,Z)) :: 'it holds in accordance with @(Rule) that @(Y) is permitted to accept @(Z)'.
 #pred legally_holds(Rule,must_not(Y,accept,Z)) :: 'it holds in accordance with @(Rule) that @(Y) is prohibited from accepting @(Z)'.
-
-%conclusion(may(A,accept,B)).
-%conclusion(must_not(A,accept,B)).
 
 % PREDICATE DEFINITIONS
 #pred accepts_position_as_representative(A,B,C) :: '@(A) accepts the position @(B) as a representative of @(C)'.
@@ -83,6 +80,317 @@
 #pred unauthorized(X) :: '@(X) is unauthorised to peform legal work'.
 #pred unfair(X) :: '@(X) is likely to unfairly attract business in the practice of law'.
 
+% RULE 34
+% 34. Executive appointments
+
+% RULE 34(1)
+% 34.—(1)  A legal practitioner must not accept any executive appointment associated with 
+% any of the following businesses:
+
+according_to(r34_1,must_not(Actor, accept, Appointment)) :-
+    legal_practitioner(Actor),
+    associated_with(Appointment,Business),
+    business(Business),
+    according_to(Rule,described_in_s1(Business)),
+    executive_appointment(Appointment). % moving executive appointment to the bottom of the list of clauses made the code run.
+
+% (a)	any business which detracts from, is incompatible with, or derogates from the dignity of,
+% the legal profession;
+
+
+according_to(r34_1_a,described_in_s1(Business)) :-
+    detracts_from_dignity_of_legal_profession(Business),
+    business(Business).
+according_to(r34_1_a,described_in_s1(Business)) :-
+    incompatible_dignity_of_legal_profession(Business),
+    business(Business).
+according_to(r34_1_a,described_in_s1(Business)) :- 
+    derogates_from_dignity_of_legal_profession(Business),
+    business(Business).
+
+% (b) Repealed in amendment.
+
+% (c)	any business which is likely to unfairly attract business in the practice of law;
+
+
+according_to(r34_1_c,described_in_s1(X)) :- unfair(X).
+
+% (d)	any business which involves the sharing of the legal practitioner’s fees with, 
+% or the payment of a commission to, any unauthorised person for legal work performed 
+% by the legal practitioner;
+
+
+according_to(r34_1_d,described_in_s1(X)) :- involves_sharing_fees(X,Fees,Recipient), as_compensation_for(Fees,Work), performed_by(Work,Lawyer), legal_work(Work), unauthorized(Recipient).
+according_to(r34_1_d,described_in_s1(X)) :- involves_paying_commission(X,Fees,Recipient), as_compensation_for(Fees,Work), performed_by(Work,Lawyer), legal_work(Work), unauthorized(Recipient).
+
+
+% (e)	any business set out in the First Schedule;
+
+according_to(r34_1_e,described_in_s1(X)) :- described_in_first_schedule(X).
+
+% (f)	any business which is prohibited by —
+% (i)	the Act;
+% (ii)	these Rules or any other subsidiary legislation made under the Act;
+% (iii)	any practice directions, guidance notes and rulings issued under section 71(6) of the Act; or
+% (iv)	any practice directions, guidance notes and rulings (relating to professional practice,
+%  etiquette, conduct and discipline) issued by the Council or the Society.
+
+according_to(r34_1_f,described_in_s1(X)) :- prohibited_business(X).
+
+% AMENDED RULE 34(1A)
+% 1A: A legal practitioner must not accept any executive appointment that:
+% materially interferes with —
+% (i)	the legal practitioner’s primary occupation of practising as a lawyer;
+% (ii)	the legal practitioner’s availability to those who may seek the legal practitioner’s 
+% services as a lawyer; or
+% (iii)	the representation of the legal practitioner’s clients.
+
+%% NOTE: In the legislative text, the numbering would be different. In the code, the number of
+%% the section is left as r34_1_b solely so that we do not need to rewrite the tests in order
+%% for them to work.
+
+according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
+    legal_practitioner(Actor),
+    executive_appointment(Appointment),
+    materially_interferes_with(Appointment,practicing_as_a_lawyer,Actor),
+    primary_occupation_of(Actor,practicing_as_a_lawyer).
+
+    % TODO: These were wrong in the origintal Actor/Lawyer.
+
+according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
+    legal_practitioner(Actor),
+    executive_appointment(Appointment),
+    materially_interferes_with(Appointment,availability,Actor).
+
+according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
+    legal_practitioner(Actor),
+    executive_appointment(Appointment),
+    materially_interferes_with(Appointment,representation,Actor).
+
+% RULE 34(2)(a)
+% (2)  Subject to paragraph (1), a legal practitioner in a Singapore law practice 
+% (called in this paragraph the main practice) may accept an executive appointment 
+% in another Singapore law practice (called in this paragraph the related practice), 
+% if the related practice is connected to the main practice in either of the following ways:
+% (a)	every legal or beneficial owner of the related practice is the sole proprietor, 
+% or a partner or director, of the main practice;
+
+according_to(r34_2_a,may(LP,accept,EA)) :-
+    legal_practitioner(LP),
+    member_of(LP,Main_Practice),
+    law_practice_in_singapore(Main_Practice),
+    executive_appointment_in_a_law_practice(EA,Other_Practice),
+    law_practice_in_singapore(Other_Practice),
+    Main_Practice \= Other_Practice,
+    not owner_and_not_partner_of(Other_Practice,Main_Practice).
+
+opposes(r34_1_b,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
+opposes(r34_1,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
+
+overrides(r34_1_b,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
+overrides(r34_1,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
+
+owner_of(X,Y) :-
+    legal_owner_of(X,Y).
+owner_of(X,Y) :-
+    beneficial_owner_of(X,Y).
+
+partner_sp_or_director_of(X,Y) :-
+    partner_of(X,Y).
+partner_sp_or_director_of(X,Y) :-
+    sole_proprietor_of(X,Y).
+partner_sp_or_director_of(X,Y) :-
+    director_of(X,Y).
+
+owner_and_not_partner_of(Y,Z) :-
+    owner_of(X,Y),
+    not partner_sp_or_director_of(X,Z).
+
+
+% RULE 34(2)(b)
+% (b)	the legal practitioner accepts the executive appointment as a representative 
+% of the main practice in the related practice, and the involvement of the main practice 
+% in the related practice is not prohibited by any of the following:
+% (i)	the Act;
+% (ii)	these Rules or any other subsidiary legislation made under the Act;
+% (iii)	any practice directions, guidance notes and rulings issued under section 71(6) of the Act;
+% (iv)	any practice directions, guidance notes and rulings (relating to professional practice,
+% etiquette, conduct and discipline) issued by the Council or the Society.
+
+according_to(r34_2_b,may(LP,accept,EA)) :-
+    legal_practitioner(LP),
+    member_of(LP,Main_Practice),
+    law_practice_in_singapore(Main_Practice),
+    executive_appointment_in_a_law_practice(EA,Other_Practice),
+    law_practice_in_singapore(Other_Practice),
+    Main_Practice \= Other_Practice,
+    accepts_position_as_representative(LP,EA,Main_Practice),
+    not participation_prohibited(Main_Practice,Other_Practice). % this is a low-fidelity representation of the prohibition.
+
+opposes(r34_1,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
+opposes(r34_1_b,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
+
+overrides(r34_1,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
+overrides(r34_1_b,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
+
+% RULE 34(3)
+% (3)  Subject to paragraph (1), a legal practitioner may accept an executive appointment 
+% in a business entity which provides law-related services.
+
+according_to(r34_3,may(LP,accept,EA)) :-
+    legal_practitioner(LP),
+    executive_appointment_in_a_business_entity(EA,BE),
+    provides(BE,LRS),
+    law_related_service(LRS).
+
+opposes(r34_1,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
+opposes(r34_1_b,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
+
+overrides(r34_1,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
+overrides(r34_1_b,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
+
+% RULE 34(4)
+% (4)  Subject to paragraph (1), a legal practitioner (not being a locum solicitor) may 
+% accept an executive appointment in a business entity which does not provide any 
+% legal services or law-related services, if all of the conditions set out in the 
+% Second Schedule are satisfied.
+
+according_to(r34_4,may(LP,accept,EA)) :-
+    legal_practitioner(LP),
+    not locum_solicitor(LP),
+    executive_appointment_in_a_business_entity(EA,BE),
+    not provides_legal_or_law_related_services(BE),
+    conditions_of_second_schedule_satisfied.
+
+opposes(r34_1,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
+opposes(r34_1_b,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
+
+overrides(r34_1,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
+overrides(r34_1_b,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
+
+% RULE 34(5)
+% (5)  Despite paragraph (1)(b), but subject to paragraph (1)(a) and (c) to (f), 
+% a locum solicitor may accept an executive appointment in a business entity which 
+% does not provide any legal services or law-related services, if all of the 
+% conditions set out in the Second Schedule are satisfied.
+
+according_to(r34_5,may(LP,accept,EA)) :-
+    legal_practitioner(LP),
+    locum_solicitor(LP),
+    executive_appointment_in_a_business_entity(EA,BE),
+    not provides_legal_or_law_related_services(BE),
+    conditions_of_second_schedule_satisfied.
+
+opposes(r34_1,must_not(LP,accept,EA),r34_5,may(LP,accept,EA)).
+opposes(r34_5,may(LP,accept,EA),r34_1_b,must_not(LP,accept,EA)).
+
+overrides(r34_1,must_not(LP,accept,EA),r34_5,may(LP,accept,EA)).
+overrides(r34_5,may(LP,accept,EA),r34_1_b,must_not(LP,accept,EA)).
+
+provides_legal_or_law_related_services(BE) :-
+    provides(BE,Serv),
+    legal_service(Serv).
+
+provides_legal_or_law_related_services(BE) :-
+    provides(BE,Serv),
+    law_related_service(Serv).
+
+% RULE 34(6)
+% (6)  Except as provided in paragraphs (2) to (5) —
+% (a)	a legal practitioner in a Singapore law practice must not accept any executive 
+% appointment in another Singapore law practice; and
+
+according_to(r34_6_a,must_not(LP,accept,EA)) :-
+    legal_practitioner(LP),
+    executive_appointment_in_a_law_practice(EA,Other_Practice),
+    member_of(LP,Own_Practice),
+    law_practice_in_singapore(Own_Practice),
+    law_practice_in_singapore(Other_Practice),
+    Own_Practice \= Other_Practice.
+
+opposes(r34_2_a,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+opposes(r34_2_b,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+opposes(r34_3,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+opposes(r34_4,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+opposes(r34_5,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+
+overrides(r34_2_a,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+overrides(r34_2_b,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+overrides(r34_3,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+overrides(r34_4,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+overrides(r34_5,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
+
+% (b)	a legal practitioner must not accept any executive appointment in a business entity.
+
+according_to(r34_6_b,must_not(LP,accept,EA)) :-
+    legal_practitioner(LP),
+    executive_appointment_in_a_business_entity(EA,BE).
+
+opposes(r34_2_a,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+opposes(r34_2_b,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+opposes(r34_3,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+opposes(r34_4,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+opposes(r34_5,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+
+
+overrides(r34_2_a,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+overrides(r34_2_b,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+overrides(r34_3,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+overrides(r34_4,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+overrides(r34_5,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
+
+% RULE 34(7)
+% (7)  To avoid doubt, nothing in this rule prohibits a legal practitioner 
+% from accepting any appointment in any institution set out in the Third Schedule.
+
+according_to(r34_7,may(LP,accept,P)) :-
+    legal_practitioner(LP),
+    position(P),
+    institution(I),
+    in(P,I),
+    in_third_schedule(I).
+
+% DEFINITIONS
+% (9)  In this rule and the First to Fourth Schedules —
+% “business” includes any business, trade or calling in Singapore or elsewhere, 
+% whether or not for the purpose of profit, but excludes the practice of law;
+
+business(X) :- trade(X), X \= practice_of_law.
+business(X) :- calling(X), X \= practice_of_law.
+business(X) :- business(X), X \= practice_of_law. % circular much?
+
+% “business entity”  —
+% (a)	includes any company, corporation, partnership, limited liability partnership, 
+% sole proprietorship, business trust or other entity that carries on any business; but
+% (b)	excludes any Singapore law practice, any Joint Law Venture, any Formal Law Alliance, 
+% any foreign law practice and any institution set out in the Third Schedule;
+
+business_entity(X) :- carries_on(X,Y), business(Y), company(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), corporation(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), partnership(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), llp(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), soleprop(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), business_trust(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+business_entity(X) :- carries_on(X,Y), business(Y), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
+
+% TODO: THE ABSENCE OF THIS RULE IN THE ORIGINAL IS AN ERROR.
+law_practice_in_singapore(X) :-
+    law_practice(X),
+    jurisdiction(X,singapore).
+
+% “executive appointment” means a position associated with a business, or in a business 
+% entity or Singapore law practice, which entitles the holder of the position to perform 
+% executive functions in relation to the business, business entity or Singapore law practice 
+% (as the case may be), but excludes any non‑executive director or independent director 
+% associated with the business or in the business entity;
+
+executive_appointment(X) :- executive_appointment_associated_with_a_business(X,Y).
+executive_appointment(X) :- executive_appointment_in_a_business_entity(X,Y).
+executive_appointment(X) :- executive_appointment_in_a_law_practice(X,Y).
+
+executive_appointment_associated_with_a_business(X,Y) :- position(X), entitles_holder(X), associated_with(X,Y), business(Y), not non_executive_director(X), not independent_director(X).
+executive_appointment_in_a_business_entity(X,Y) :- position(X), entitles_holder(X), in(X,Y), business_entity(Y), not non_executive_director(X), not independent_director(X).
+executive_appointment_in_a_law_practice(X,Y) :- position(X), entitles_holder(X), in(X,Y), law_practice(Y), jurisdiction(Y,singapore), not non_executive_director(X), not independent_director(X).
 
 % ABDUCIBILITY STATEMENTS
 %#abducible accepts_position_as_representative(A,B,C).
@@ -142,356 +450,6 @@
 %#abducible unauthorized(X).
 %#abducible unfair(X).
 
-% RULE 34
-% 34. Executive appointments
-
-% RULE 34(1)
-% 34.—(1)  A legal practitioner must not accept any executive appointment associated with 
-% any of the following businesses:
-
-%rule(r34_1).
-
-according_to(r34_1,must_not(Actor, accept, Appointment)) :-
-    legal_practitioner(Actor),
-    associated_with(Appointment,Business),
-    business(Business),
-    according_to(Rule,described_in_s1(Business)),
-    executive_appointment(Appointment). % moving executive appointment to the bottom of the list of clauses made the code run.
-
-% (a)	any business which detracts from, is incompatible with, or derogates from the dignity of,
-% the legal profession;
-
-%rule(r34_1_a).
-
-
-according_to(r34_1_a,described_in_s1(Business)) :-
-    detracts_from_dignity_of_legal_profession(Business),
-    business(Business).
-according_to(r34_1_a,described_in_s1(Business)) :-
-    incompatible_dignity_of_legal_profession(Business),
-    business(Business).
-according_to(r34_1_a,described_in_s1(Business)) :- 
-    derogates_from_dignity_of_legal_profession(Business),
-    business(Business).
-
-% (b) Repealed in amendment.
-
-% (c)	any business which is likely to unfairly attract business in the practice of law;
-
-%rule(r34_1_c).
-
-
-according_to(r34_1_c,described_in_s1(X)) :- unfair(X).
-
-% (d)	any business which involves the sharing of the legal practitioner’s fees with, 
-% or the payment of a commission to, any unauthorised person for legal work performed 
-% by the legal practitioner;
-
-%rule(r34_1_d).
-
-
-according_to(r34_1_d,described_in_s1(X)) :- involves_sharing_fees(X,Fees,Recipient), as_compensation_for(Fees,Work), performed_by(Work,Lawyer), legal_work(Work), unauthorized(Recipient).
-according_to(r34_1_d,described_in_s1(X)) :- involves_paying_commission(X,Fees,Recipient), as_compensation_for(Fees,Work), performed_by(Work,Lawyer), legal_work(Work), unauthorized(Recipient).
-
-
-% (e)	any business set out in the First Schedule;
-
-%rule(r34_1_e).
-
-according_to(r34_1_e,described_in_s1(X)) :- described_in_first_schedule(X).
-
-% (f)	any business which is prohibited by —
-% (i)	the Act;
-% (ii)	these Rules or any other subsidiary legislation made under the Act;
-% (iii)	any practice directions, guidance notes and rulings issued under section 71(6) of the Act; or
-% (iv)	any practice directions, guidance notes and rulings (relating to professional practice,
-%  etiquette, conduct and discipline) issued by the Council or the Society.
-
-%rule(r34_1_f).
-
-
-according_to(r34_1_f,described_in_s1(X)) :- prohibited_business(X).
-
-% AMENDED RULE 34(1A)
-% 1A: A legal practitioner must not accept any executive appointment that:
-% materially interferes with —
-% (i)	the legal practitioner’s primary occupation of practising as a lawyer;
-% (ii)	the legal practitioner’s availability to those who may seek the legal practitioner’s 
-% services as a lawyer; or
-% (iii)	the representation of the legal practitioner’s clients.
-
-%% NOTE: In the legislative text, the numbering would be different. In the code, the number of
-%% the section is left as r34_1_b solely so that we do not need to rewrite the tests in order
-%% for them to work.
-
-%rule(r34_1_b).
-
-
-according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
-    legal_practitioner(Actor),
-    executive_appointment(Appointment),
-    materially_interferes_with(Appointment,practicing_as_a_lawyer,Actor),
-    primary_occupation_of(Actor,practicing_as_a_lawyer).
-
-    % TODO: These were wrong in the origintal Actor/Lawyer.
-
-%rule(r34_1_b).
-
-
-according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
-    legal_practitioner(Actor),
-    executive_appointment(Appointment),
-    materially_interferes_with(Appointment,availability,Actor).
-
-according_to(r34_1_b,must_not(Actor, accept, Appointment)) :-
-    legal_practitioner(Actor),
-    executive_appointment(Appointment),
-    materially_interferes_with(Appointment,representation,Actor).
-
-% RULE 34(2)(a)
-% (2)  Subject to paragraph (1), a legal practitioner in a Singapore law practice 
-% (called in this paragraph the main practice) may accept an executive appointment 
-% in another Singapore law practice (called in this paragraph the related practice), 
-% if the related practice is connected to the main practice in either of the following ways:
-% (a)	every legal or beneficial owner of the related practice is the sole proprietor, 
-% or a partner or director, of the main practice;
-
-%rule(r34_2_a).
-
-
-according_to(r34_2_a,may(LP,accept,EA)) :-
-    legal_practitioner(LP),
-    member_of(LP,Main_Practice),
-    law_practice_in_singapore(Main_Practice),
-    executive_appointment_in_a_law_practice(EA,Other_Practice),
-    law_practice_in_singapore(Other_Practice),
-    Main_Practice \= Other_Practice,
-    not owner_and_not_partner_of(Other_Practice,Main_Practice).
-
-opposes(r34_1_b,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
-opposes(r34_1,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
-
-overrides(r34_1_b,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
-overrides(r34_1,must_not(LP,accept,EA),r34_2_a,may(LP,accept,EA)).
-
-owner_of(X,Y) :-
-    legal_owner_of(X,Y).
-owner_of(X,Y) :-
-    beneficial_owner_of(X,Y).
-
-partner_sp_or_director_of(X,Y) :-
-    partner_of(X,Y).
-partner_sp_or_director_of(X,Y) :-
-    sole_proprietor_of(X,Y).
-partner_sp_or_director_of(X,Y) :-
-    director_of(X,Y).
-
-owner_and_not_partner_of(Y,Z) :-
-    owner_of(X,Y),
-    not partner_sp_or_director_of(X,Z).
-
-
-% RULE 34(2)(b)
-% (b)	the legal practitioner accepts the executive appointment as a representative 
-% of the main practice in the related practice, and the involvement of the main practice 
-% in the related practice is not prohibited by any of the following:
-% (i)	the Act;
-% (ii)	these Rules or any other subsidiary legislation made under the Act;
-% (iii)	any practice directions, guidance notes and rulings issued under section 71(6) of the Act;
-% (iv)	any practice directions, guidance notes and rulings (relating to professional practice,
-% etiquette, conduct and discipline) issued by the Council or the Society.
-
-%rule(r34_2_b).
-
-according_to(r34_2_b,may(LP,accept,EA)) :-
-    legal_practitioner(LP),
-    member_of(LP,Main_Practice),
-    law_practice_in_singapore(Main_Practice),
-    executive_appointment_in_a_law_practice(EA,Other_Practice),
-    law_practice_in_singapore(Other_Practice),
-    Main_Practice \= Other_Practice,
-    accepts_position_as_representative(LP,EA,Main_Practice),
-    not participation_prohibited(Main_Practice,Other_Practice). % this is a low-fidelity representation of the prohibition.
-
-opposes(r34_1,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
-opposes(r34_1_b,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
-
-overrides(r34_1,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
-overrides(r34_1_b,must_not(LP,accept,EA),r34_2_b,may(LP,accept,EA)).
-
-% RULE 34(3)
-% (3)  Subject to paragraph (1), a legal practitioner may accept an executive appointment 
-% in a business entity which provides law-related services.
-
-%rule(r34_3).
-
-according_to(r34_3,may(LP,accept,EA)) :-
-    legal_practitioner(LP),
-    executive_appointment_in_a_business_entity(EA,BE),
-    provides(BE,LRS),
-    law_related_service(LRS).
-
-opposes(r34_1,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
-opposes(r34_1_b,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
-
-overrides(r34_1,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
-overrides(r34_1_b,must_not(LP,accept,EA),r34_3,may(LP,accept,EA)).
-
-% RULE 34(4)
-% (4)  Subject to paragraph (1), a legal practitioner (not being a locum solicitor) may 
-% accept an executive appointment in a business entity which does not provide any 
-% legal services or law-related services, if all of the conditions set out in the 
-% Second Schedule are satisfied.
-
-%rule(r34_4).
-
-according_to(r34_4,may(LP,accept,EA)) :-
-    legal_practitioner(LP),
-    not locum_solicitor(LP),
-    executive_appointment_in_a_business_entity(EA,BE),
-    not provides_legal_or_law_related_services(BE),
-    conditions_of_second_schedule_satisfied.
-
-opposes(r34_1,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
-opposes(r34_1_b,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
-
-overrides(r34_1,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
-overrides(r34_1_b,must_not(LP,accept,EA),r34_4,may(LP,accept,EA)).
-
-% RULE 34(5)
-% (5)  Despite paragraph (1)(b), but subject to paragraph (1)(a) and (c) to (f), 
-% a locum solicitor may accept an executive appointment in a business entity which 
-% does not provide any legal services or law-related services, if all of the 
-% conditions set out in the Second Schedule are satisfied.
-
-%rule(r34_5).
-
-according_to(r34_5,may(LP,accept,EA)) :-
-    legal_practitioner(LP),
-    locum_solicitor(LP),
-    executive_appointment_in_a_business_entity(EA,BE),
-    not provides_legal_or_law_related_services(BE),
-    conditions_of_second_schedule_satisfied.
-
-opposes(r34_1,must_not(LP,accept,EA),r34_5,may(LP,accept,EA)).
-opposes(r34_5,may(LP,accept,EA),r34_1_b,must_not(LP,accept,EA)).
-
-overrides(r34_1,must_not(LP,accept,EA),r34_5,may(LP,accept,EA)).
-overrides(r34_5,may(LP,accept,EA),r34_1_b,must_not(LP,accept,EA)).
-
-provides_legal_or_law_related_services(BE) :-
-    provides(BE,Serv),
-    legal_service(Serv).
-
-provides_legal_or_law_related_services(BE) :-
-    provides(BE,Serv),
-    law_related_service(Serv).
-
-% RULE 34(6)
-% (6)  Except as provided in paragraphs (2) to (5) —
-% (a)	a legal practitioner in a Singapore law practice must not accept any executive 
-% appointment in another Singapore law practice; and
-
-%rule(r34_6_a).
-
-according_to(r34_6_a,must_not(LP,accept,EA)) :-
-    legal_practitioner(LP),
-    executive_appointment_in_a_law_practice(EA,Other_Practice),
-    member_of(LP,Own_Practice),
-    law_practice_in_singapore(Own_Practice),
-    law_practice_in_singapore(Other_Practice),
-    Own_Practice \= Other_Practice.
-
-opposes(r34_2_a,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
-opposes(r34_2_b,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
-opposes(r34_3,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
-opposes(r34_4,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
-opposes(r34_5,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
-
-overrides(r34_2_a,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
-overrides(r34_2_b,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
-overrides(r34_3,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
-overrides(r34_4,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
-overrides(r34_5,may(LP,accept,EA),r34_6_a,must_not(LP,accept,EA)).
-
-% (b)	a legal practitioner must not accept any executive appointment in a business entity.
-
-%rule(r34_6_b).
-
-according_to(r34_6_b,must_not(LP,accept,EA)) :-
-    legal_practitioner(LP),
-    executive_appointment_in_a_business_entity(EA,BE).
-
-opposes(r34_2_a,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
-opposes(r34_2_b,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
-opposes(r34_3,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
-opposes(r34_4,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
-opposes(r34_5,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
-
-
-overrides(r34_2_a,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
-overrides(r34_2_b,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
-overrides(r34_3,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
-overrides(r34_4,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
-overrides(r34_5,may(LP,accept,EA),r34_6_b,must_not(LP,accept,EA)).
-
-% RULE 34(7)
-% (7)  To avoid doubt, nothing in this rule prohibits a legal practitioner 
-% from accepting any appointment in any institution set out in the Third Schedule.
-
-%rule(r34_7).
-
-according_to(r34_7,may(LP,accept,P)) :-
-    legal_practitioner(LP),
-    position(P),
-    institution(I),
-    in(P,I),
-    in_third_schedule(I).
-
-% DEFINITIONS
-% (9)  In this rule and the First to Fourth Schedules —
-% “business” includes any business, trade or calling in Singapore or elsewhere, 
-% whether or not for the purpose of profit, but excludes the practice of law;
-
-business(X) :- trade(X), X \= practice_of_law.
-business(X) :- calling(X), X \= practice_of_law.
-business(X) :- business(X), X \= practice_of_law. % circular much?
-
-
-% “business entity”  —
-% (a)	includes any company, corporation, partnership, limited liability partnership, 
-% sole proprietorship, business trust or other entity that carries on any business; but
-% (b)	excludes any Singapore law practice, any Joint Law Venture, any Formal Law Alliance, 
-% any foreign law practice and any institution set out in the Third Schedule;
-
-business_entity(X) :- carries_on(X,Y), business(Y), company(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
-business_entity(X) :- carries_on(X,Y), business(Y), corporation(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
-business_entity(X) :- carries_on(X,Y), business(Y), partnership(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
-business_entity(X) :- carries_on(X,Y), business(Y), llp(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
-business_entity(X) :- carries_on(X,Y), business(Y), soleprop(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
-business_entity(X) :- carries_on(X,Y), business(Y), business_trust(X), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
-business_entity(X) :- carries_on(X,Y), business(Y), not law_practice_in_singapore(X), not joint_law_venture(X), not formal_law_alliance(X), not foreign_law_practice(X), not third_schedule_institution(X).
-
-
-% TODO: THE ABSENCE OF THIS RULE IN THE ORIGINAL IS AN ERROR.
-law_practice_in_singapore(X) :-
-    law_practice(X),
-    jurisdiction(X,singapore).
-
-% “executive appointment” means a position associated with a business, or in a business 
-% entity or Singapore law practice, which entitles the holder of the position to perform 
-% executive functions in relation to the business, business entity or Singapore law practice 
-% (as the case may be), but excludes any non‑executive director or independent director 
-% associated with the business or in the business entity;
-
-executive_appointment(X) :- executive_appointment_associated_with_a_business(X,Y).
-executive_appointment(X) :- executive_appointment_in_a_business_entity(X,Y).
-executive_appointment(X) :- executive_appointment_in_a_law_practice(X,Y).
-
-executive_appointment_associated_with_a_business(X,Y) :- position(X), entitles_holder(X), associated_with(X,Y), business(Y), not non_executive_director(X), not independent_director(X).
-executive_appointment_in_a_business_entity(X,Y) :- position(X), entitles_holder(X), in(X,Y), business_entity(Y), not non_executive_director(X), not independent_director(X).
-executive_appointment_in_a_law_practice(X,Y) :- position(X), entitles_holder(X), in(X,Y), law_practice(Y), jurisdiction(Y,singapore), not non_executive_director(X), not independent_director(X).
-
 
 %% TEST QUERIES
 %?- business(X).                                            
@@ -546,7 +504,7 @@ executive_appointment_in_a_law_practice(X,Y) :- position(X), entitles_holder(X),
 % Working, 1 model.
 
 %?- according_to(r34_1_b,must_not(Actor, accept, Appointment)). 
-% DEADLY SLOW. ~5 seconds per model.
+% DEADLY SLOW. ~5 seconds per model and abducibility
 % Working, 93 models (31 executive appointments * 3 interferences)
 
 %law_practice(this).

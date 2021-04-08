@@ -3,7 +3,7 @@
 %% DESCRIPTION: CEO position should be prohibited.
 
 #include 'basic_facts.pl'.
-#include '../newr34_amended.pl'.
+#include '../newr34.pl'.
 
 materially_interferes_with(ceo_megaCorp,practicing_as_a_lawyer,jason).
 

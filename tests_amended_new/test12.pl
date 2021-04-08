@@ -5,7 +5,7 @@
 %% DESCRIPTION: executive position in that other legal practice.
 
 #include 'basic_facts.pl'.
-#include '../newr34lpdat.pl'.
+#include '../newr34_amended.pl'.
 
 law_practice(other_practice).
 partnership(other_practice).

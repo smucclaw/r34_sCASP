@@ -3,7 +3,7 @@
 %% DESCRIPTION: jason should not be allowed to accept the CEO position at megaCorp.
 
 #include 'basic_facts.pl'.
-#include '../newr34_amended.pl'.
+#include '../newr34.pl'.
 
 
 % Facts

@@ -3,7 +3,7 @@
 %% DESCRIPTION: second schedule are met, and one of the requirements of subsection 1 is violated.
 
 #include 'basic_facts.pl'.
-#include '../newr34_amended.pl'.
+#include '../newr34.pl'.
 
 carries_on(megaCorp,predatory_lending).
 incompatible_dignity_of_legal_profession(predatory_lending).

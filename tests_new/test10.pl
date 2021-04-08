@@ -1,10 +1,9 @@
 %% DESCRIPTION: If there is another legal practice owned by jason and one other person, and jason
-%% DESCRIPTION: is the sole proprietor of his firm, but he accepts the position as a representative
-%% DESCRIPTION: of his firm, he is permitted by subparagraph 2(b) to take an
+%% DESCRIPTION: is the sole proprietor of his firm, he is not permitted by subparagraph 2(a) to take an
 %% DESCRIPTION: executive position in that other legal practice.
 
 #include 'basic_facts.pl'.
-#include '../newr34_amended.pl'.
+#include '../newr34.pl'.
 
 law_practice(other_practice).
 partnership(other_practice).
@@ -17,6 +16,7 @@ position(other_practice_executive).
 in(other_practice_executive,other_practice).
 entitles_holder(other_practice_executive).
 
-accepts_position_as_representative(jason,other_practice_executive,abc_llp).
+?-  not according_to(r34_2_a,may(jason,accept,other_practice_executive)).
 
-?-  according_to(r34_2_b,may(jason,accept,other_practice_executive)).
+% This tests only for whether section 34(2)(a) stops working when there are additional non-shared owners
+% it does not check to see whether in that circumstance jason is prohibited.

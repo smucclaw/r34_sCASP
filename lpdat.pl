@@ -36,8 +36,8 @@ refuted_by(Rule,Conclusion,Other_Rule,Other_Conclusion) :-
     opposes(Rule,Conclusion,Other_Rule,Other_Conclusion),
     overrides(Other_Rule,Other_Conclusion,Rule,Conclusion),
     according_to(Rule,Conclusion),
-    %Rule \= Other_Rule,
-    %Conclusion \= Other_Conclusion,
+    Rule \= Other_Rule,
+    Conclusion \= Other_Conclusion,
     according_to(Other_Rule,Other_Conclusion).
 
 % A rule is compromised if it is either refuted or defeated.
@@ -98,32 +98,32 @@ defeated_by_refutation(Rule,Conclusion,Other_Rule,Other_Conclusion) :-
     refuted_by(Rule,Conclusion,Other_Rule,Other_Conclusion).
 
 % A conclusion can be defeated three ways.
-%defeated(R,C) :-
-%    rule(R),
-%    rule(OR),
-%    R \= OR,
-%    conclusion(C),
-%    conclusion(OC),
-%    C \= OC,
-%    opposes(R,C,OR,OC),
-%    defeated_by_disqualification(R,C,OR,OC).
-%defeated(R,C) :-
-%    rule(R),
-%    rule(OR),
-%    R \= OR,
-%    conclusion(C),
-%    conclusion(OC),
-%    C \= OC,
-%    opposes(R,C,OR,OC),
-%    defeated_by_rebuttal(R,C,OR,OC).
 defeated(R,C) :-
     %rule(R),
     %rule(OR),
-    %R \= OR,
+    R \= OR,
     %conclusion(C),
     %conclusion(OC),
-    %C \= OC,
-    %opposes(R,C,OR,OC),
+    C \= OC,
+    opposes(R,C,OR,OC),
+    defeated_by_disqualification(R,C,OR,OC).
+defeated(R,C) :-
+    %rule(R),
+    %rule(OR),
+    R \= OR,
+    %conclusion(C),
+    %conclusion(OC),
+    C \= OC,
+    opposes(R,C,OR,OC),
+    defeated_by_rebuttal(R,C,OR,OC).
+defeated(R,C) :-
+    %rule(R),
+    %rule(OR),
+    R \= OR,
+    %conclusion(C),
+    %conclusion(OC),
+    C \= OC,
+    opposes(R,C,OR,OC),
     defeated_by_refutation(R,C,OR,OC).
 
 % a conclusion holds if it is found and not defeated.
