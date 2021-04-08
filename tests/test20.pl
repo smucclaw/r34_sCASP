@@ -2,7 +2,7 @@
 %% DESCRIPTION: because of section 34(6)(a).
 
 #include 'basic_facts.pl'.
-#include '../r34.pl'.
+
 
 law_practice(other_practice).
 jurisdiction(other_practice,singapore).

@@ -16,18 +16,15 @@ Once installed, you can run two different sets of tests against the original and
 * r34.pl: Our "faithful" encoding of what the legislation says.
 * r34_amended.pl: Our  proposed amendment to the section.
 
-|File|Passed|Failed|
-|---|---|---|
-| r34.pl |21|25|
-|r34_amended.pl|25|25|
-
-Because the amendment changed some of the section numberings, it was necessary to rewrite some of the tests
-to reflect the new numberings. There are therefore two packages of tests.
-
 ```
-./run_tests.sh tests
-./run_tests.sh tests_amended
+./run_tests.sh r34.pl
+./run_tests.sh r34_amended.pl
 ```
+
+|File|Passed|Failed|Total|
+|---|---|---|---|
+| r34.pl |21|4|25|
+|r34_amended.pl|25|0|25|
 
 ## Using s(CASP)
 

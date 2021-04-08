@@ -2,7 +2,7 @@
 %% DESCRIPTION: is a prohibited business.
 
 #include 'basic_facts.pl'.
-#include '../r34.pl'.
+
 
 prohibited_business(widget_sales).
 

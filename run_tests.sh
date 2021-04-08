@@ -5,15 +5,15 @@ fail=0
 echo
 echo "-----------------------------------------------------------"
 echo " Running tests from $1 in scasp..."
-echo " Usage: ./run_test.sh testfolder"
+echo " Usage: ./run_test.sh filename"
 echo "-----------------------------------------------------------"
 echo
 
 STARTTIME=$(date +%s)
-for i in $1/test*.pl; do
+for i in tests/test*.pl; do
     echo "TEST DESCRIPTION: $i"
     grep "DESCRIPTION" $i | sed 's/\%\% DESCRIPTION: //'
-    scasp -s1 $i > temp.out
+    scasp -s1 $i $1 > temp.out
     echo
     echo "TEST RESULT:"
     grep -A 1 "QUERY:I would like to know if" temp.out

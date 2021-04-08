@@ -3,7 +3,7 @@
 %% DESCRIPTION: by section 34(5), the prohibition hold, and the permission does not.
 
 #include 'basic_facts.pl'.
-#include '../r34.pl'.
+
 
 locum_solicitor(jason).
 materially_interferes_with(ceo_megaCorp,availability,jason).

@@ -6,7 +6,7 @@
 %% DESCRIPTION: wins.
 
 #include 'basic_facts.pl'.
-#include '../r34.pl'.
+
 
 law_practice(other_practice).
 partnership(other_practice).

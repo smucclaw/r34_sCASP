@@ -3,7 +3,7 @@
 %% DESCRIPTION: jason should not be allowed to accept the CEO position at megaCorp.
 
 #include 'basic_facts.pl'.
-#include '../r34.pl'.
+
 
 
 % Facts
@@ -15,6 +15,3 @@ incompatible_dignity_of_legal_profession(predatory_lending).
 business(predatory_lending).
 
 ?- according_to(r34_1,must_not(jason,accept,ceo_megaCorp)).
-
-
-% not workin rn without extra code.
