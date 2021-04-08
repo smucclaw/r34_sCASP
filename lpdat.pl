@@ -29,10 +29,6 @@ rebutted_by(Rule,Conclusion,Other_Rule,Other_Conclusion) :-
 % A rule is refuted if there is another rule that conflicts with it and overrides it.
 #pred refuted_by(R1,C1,R2,C2) :: 'the conclusion @(C1) from rule @(R1) is refuted by the conclusion @(C2) from rule @(R2)'.
 refuted_by(Rule,Conclusion,Other_Rule,Other_Conclusion) :-
-    %rule(Rule),
-    %rule(Other_Rule),
-    %conclusion(Conclusion),
-    %conclusion(Other_Conclusion),
     opposes(Rule,Conclusion,Other_Rule,Other_Conclusion),
     overrides(Other_Rule,Other_Conclusion,Rule,Conclusion),
     according_to(Rule,Conclusion),
@@ -99,29 +95,17 @@ defeated_by_refutation(Rule,Conclusion,Other_Rule,Other_Conclusion) :-
 
 % A conclusion can be defeated three ways.
 defeated(R,C) :-
-    %rule(R),
-    %rule(OR),
     R \= OR,
-    %conclusion(C),
-    %conclusion(OC),
     C \= OC,
     opposes(R,C,OR,OC),
     defeated_by_disqualification(R,C,OR,OC).
 defeated(R,C) :-
-    %rule(R),
-    %rule(OR),
     R \= OR,
-    %conclusion(C),
-    %conclusion(OC),
     C \= OC,
     opposes(R,C,OR,OC),
     defeated_by_rebuttal(R,C,OR,OC).
 defeated(R,C) :-
-    %rule(R),
-    %rule(OR),
     R \= OR,
-    %conclusion(C),
-    %conclusion(OC),
     C \= OC,
     opposes(R,C,OR,OC),
     defeated_by_refutation(R,C,OR,OC).
@@ -129,13 +113,8 @@ defeated(R,C) :-
 % a conclusion holds if it is found and not defeated.
 #pred legally_holds(R,C) :: 'the conclusion @(C) from rule @(R) ultimately holds'.
 legally_holds(R,C) :-
-    %rule(R),
-    %conclusion(C),      % inexplicably, changing the order of the clauses in this rules solved an infinite loop?
     not defeated(R,C),
-    according_to(R,C). %this is slowing things down, because every time it asks whether or not whether or not
-                        % something holds, it needs to know all of the things that potentially hold.
-                        % I wonder if this can be sped up by just querying the ground conclusion and not-defeated.
-
+    according_to(R,C).
 
 % Abducibility Statements for Testing
 %#abducible legally_holds(R,C).
